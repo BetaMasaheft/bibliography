@@ -1,85 +1,419 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Bibliography Workflow for HLCES</title>
-        <meta charset="UTF-8"></meta>
-        <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"></link>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" integrity="sha384-Li5uVfY2bSkD3WQyiHX8tJd0aMF91rMrQP5aAewFkHkVSTT2TmD2PehZeMmm7aiL" crossorigin="anonymous"></link>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css"
+            href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+        <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-Li5uVfY2bSkD3WQyiHX8tJd0aMF91rMrQP5aAewFkHkVSTT2TmD2PehZeMmm7aiL"
+            crossorigin="anonymous" />
         <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <style>
+            @media screen and (min-width : 1024px){
+                .BZresults{
+                    min-height: 100px;
+                }
+            }
+            .up-to-top > div{
+                text-align: right;
+            }
+            section{
+                margin-top: 20pt;
+            }
+            footer{
+                min-height: 100pt;
+            }
+            mark{
+                background-color: #37ffdc
+            }
+            
+            .Wonnabe,
+            .AeCit{
+                background-color: lightgreen;
+            }
+            .zotCit,
+            .zotRef{
+                background-color: bisque;
+            }
+            
+            section:nth-of-type(odd){
+                background: #e2dff3;
+            }</style>
     </head>
     <body>
-        <div class="col-md-12">
-            <h1>Zotero HLCES bibliography records generator</h1>
-            <div class="row" id="dataEntry"></div>
-            <div class="row" id="intro">
-                <div class="col-md-12">
-                    <p class="lead">BEWARE!! The <a href="https://www.zotero.org/styles?q=HLC" target="_blank">HLCES Zotero Style</a> is the solution you are searching for! 
-                        It will deal with 98% of the cases. So, if you have not used it, do that first. 
-                        There are only <a href="https://github.com/SChAth/ScAthiop/issues/398" target="_blank">very few cases</a> in which you might need
-                        to use this instead. And even in those cases, think well if it is not better and faster to simply edit manually what the HLCES Zotero Style offers you. 
-                        </p>
-                    <p class="lead">Enter here the unique tag of a bibliographic entry in Zotero EthioStudies Group to get a formatted reference and an author year citation</p>
-                </div>
-              
-            </div>
-            <div class="row" id="text">
-                <div class="col-md-6">
-                    <form>
-                        <input class="form-control" name="enter" id="textinput" style="width: 100%" placeholder="Enter here the Unique ID"></input>
-                    </form>
-                    <div class="col-md-12">
-                        <h3>Assumptions</h3>
-                        <ul>
-                            <li>You have a UNIQUE tag idenfitying the Zotero entry you want to print</li>
-                            <li>If you have an ethiopic calendar date in Zotero, you have entered it in the <code>extra</code> field as <q>EC 1999</q>
+        <header>
+            <nav id="top-of-page" class="navbar navbar-default navbar-static-top">
+                <div class="container">
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a class="page-scroll" href="#workflow">Workflow</a>
                             </li>
-                            <li>If you have a second publication date (?) in Zotero, you have entered it in the <code>extra</code> field as <q>pub. 1981</q>
-                            </li>
+                            <li><a class="page-scroll" href="#conduct">Conduct</a></li>
+                            <li><a class="page-scroll" href="#zoteroEntry">Data Entry</a></li>
+                            <li><a class="page-scroll" href="#knownissues">Known Issues</a></li>
+                            <li><a class="page-scroll" href="#fixes">Instructions</a></li>
                         </ul>
-                        <a role="button" class="btn btn-warning" href="https://github.com/SChAth/ScAthiop/issues/new?labels=zotero&amp;title=zoteroGenerator&amp;assignee=PietroLiuzzo&amp;body=In%20this%20example%20I%20get%20this%20with%20the%20HLCES%20style%20but%20I%20would%20like%20this%20">ask a further feature or report a problem</a>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="col-md-12" style="height: 100px">
-                        <p class="col-md-12 lead">The full reference.</p>
-                        <div class="col-md-10 ">
-                            <div class="col-md-12">
-                                <div id="result"></div>
-                            </div>
-                    </div>
-                    <button class="btn btn-primary col-md-2" data-clipboard-target="#result">copy</button>
-                </div>
-                    
-                    <hr></hr>
-                    <div class="col-md-12" style="height: 100px">
-                        
-                        <p class="col-md-12 lead">The in-text citation.</p>
-                        
-                    <div class="col-md-10 ">
-                        <div class="col-md-12">
-                            <div id="cit"></div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary col-md-2" data-clipboard-target="#cit">copy</button>
-                    </div>
-                    
-                    <hr></hr>
-                    <div class="col-md-12" style="height: 100px">
-                         <p class="col-md-12 lead">This is what you get with the HLCES Zotero Style.</p>
-                        <div class="col-md-10 ">
-                           
-                            <div class="col-md-12">
-                                <div id="HLCES"></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary col-md-2" data-clipboard-target="#HLCES">copy</button>
-                    </div>
-                </div>
+            </nav>
+            <div class="col-md-12">
+                <div class="container"><h1 class="h1-responsive">Zotero HLCES bibliography
+                        workflow</h1></div>
             </div>
-        </div>
-       
+        </header>
+        <main>
+            <section id="workflow" class="row">
+                <div class="container">
+                    <p>This is an "how to" page about bibliography which will give you an idea of
+                        what is available and hopefully facilitate your bibliography workflow.</p>
+                    <p>At no point this page will check your bibliography or guarantee
+                            <b>correctness against given guidelines</b>, for example the <a
+                            href="https://journals.sub.uni-hamburg.de/aethiopica/about/submissions#authorGuidelines"
+                            target="_blank">Aethiopica guidelines</a>, you <mark>still have to do it
+                            your self</mark>. No tool does it all and magically.</p>
+                    <p>Whichever the output requiring bibliography, an email, a paper, a web
+                        project, etc. the suggested bibliographic database is <a
+                            href="https://www.zotero.org/">Zotero</a>.</p>
+                    <p>We only use some, you might want to use much more for your self. </p>
+                    <p>The <a href="https://www.zotero.org/styles?q=HLC" target="_blank">HLCES
+                            Zotero Style</a> is the official style of the centre! It deals with 98%
+                        of the cases. So, if you have not used it, do that first.</p>
+                    <p>What this means is that in the best and easiest case scenario, you will</p>
+                    <ol>
+                        <li><a href="#zoteroEntry">enter data in zotero</a></li>
+                        <li>enter citations in your file</li>
+                        <li>compile the bibliography and style the citations with the HLCES
+                            Style</li>
+                    </ol>
+                    <p>We all know that such scenario is never real, so we will go into some more
+                        details. </p>
+                    <ol>
+                        <li>Please, as a first step make sure you <a
+                                href="https://www.zotero.org/download/">install Zotero</a> and get
+                            familiar with its possibilities. This will tipically include installing
+                            Zotero Standalone (recommended) or as a plugin in your browser.</li>
+                        <li>Follow the instructions during installation to get also the Word / Open
+                            Office plugins, according to what you are using. The app will guide
+                            you.</li>
+                        <li>Become member of the<a
+                                href="https://www.zotero.org/groups/358366/ethiostudies/items"
+                                target="_blank"> EthioStudies Group on Zotero</a>. This is open for
+                            reuse, not for contributions. If you would like to contribute, request
+                            access rights to<a
+                                href="mailto:eugenia.sokolinski@uni-hamburg.de?Subject=Request%20to%20edit%20EthioStudies%20Zotero%20Group"
+                                > the administrator</a>, Eugenia Sokolinski.</li>
+                        <li>Add the <a href="https://www.zotero.org/styles?q=HLC" target="_blank"
+                                >HLCES Zotero Styles</a> to your Zotero installation. <mark>N.B.:
+                                ONLY the online version on the official Zotero Styles Repository
+                                should be used.</mark> Please avoid local fixes which claim to use
+                            this style, instead submit changes to the style in the official repo if
+                            you think they can improve it.</li>
+                    </ol>
+                    <p>N.B.: If you want to know how to enter bibliographic citations and references
+                        in Beta Maṣāḥǝft, you are on the wrong page. <a target="_blank"
+                            href="https://github.com/BetaMasaheft/Documentation/wiki/guidelines#bibliographic-references"
+                            >Here is how the guidelines are given for the XML editing workflow of
+                            that project.</a> Code of conduct to enter data in the Zotero Group is
+                        obviously the same and is maintained by the project.</p>
+                </div>
+                <div class="container">
+                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
+                </div>
+            </section>
+            <section id="conduct" class="row">
+                <div class="container">
+                    <p>Working with a common group library and style brings great potential, but
+                        comes with great responsibilities. If you alter the common data for your own
+                        purposes, for example to get the result you want at that moment with a
+                        workaround you have found, well, you will break everyone else's workflow,
+                        which is not nice. Therefore please:</p>
+                    <ul>
+                        <li>Enter data in the Zotero Group library responsibly</li>
+                        <li>There is no reason to delete information from records imported from a
+                            catalogue, especially if we typically don't use it. In the past for example,
+                            unfortunately, many DOIs have been removed for exceed of zeal in the
+                            cleansing of the records in the Group Library.</li>
+                        <li>To reuse the data for your own project <mark>copy the entries in your
+                                own library</mark>.</li>
+                        <li>Use the style in awareness of its current limitations.</li>
+                        <li>Be wise in your local workflow. e.g. remember that if you do local fixes
+                            to the output and then update your bibliography, your changes will be
+                            gone.</li>
+                    </ul>
+                </div>
+                <div class="container">
+                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
+                </div>
+            </section>
+            <section id="zoteroEntry" class="row">
+                <div class="container"><p>The Beta Maṣāḥǝft Team has <mark><a target="_blank"
+                                href="https://github.com/BetaMasaheft/Documentation/wiki/zoteroguidelines"
+                                >guidelines on his wiki on how to enter data in the EthioStudies
+                                Zotero group library</a></mark>. If you do not have access to edit
+                        the library, but you use its data and perhaps the HLCES style, it is also
+                        important that you know those instructions.</p>
+                    <p>Please note that there are three Hiob Ludolf Centre Zotero Style. Only one is
+                        the reference style, <mark><i>Hiob Ludolf Centre for Ethiopian
+                            Studies</i></mark>. The other two are <i>Hiob Ludolf Centre for
+                            Ethiopian Studies (with URL/DOI)</i> and <i>Hiob Ludolf Centre for
+                            Ethiopian Studies names long</i> which respectively add the DOI and URL
+                        to the full citation and avoid the abbreviation to the initials of the
+                        author's names. Through out this page where not further specified, we intend
+                        always the main style. Some of the centre's publications will require you to
+                        use one or the other of the two variants.</p>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive container-fluid">
+                    <table class="table" id="diffstyles">
+                        <thead>
+                            <tr>
+                                <th>Record in Zotero</th>
+                                <th>Hiob Ludolf Centre for Ethiopian Studies</th>
+                                <th>Hiob Ludolf Centre for Ethiopian Studies (with URL/DOI)</th>
+                                <th>Hiob Ludolf Centre for Ethiopian Studies names long</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td><a
+                                    href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/4GGM4NKN"
+                                    ><span class="zotID">bm:lutz2017arabic</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/UV3RRI48"
+                                            ><span class="zotID"> bm:PlinyHistory</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+
+                            </tr>
+                            <tr>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/B66AKH8J"
+                                            ><span class="zotID">bm:lepage2011testte</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+
+                            </tr>
+                            <tr>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/B66AKH8J"
+                                            ><span class="zotID">Yahayanawu</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+
+                            </tr>
+                            <tr>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/5BN5SJEN"
+                                            ><span class="zotID">fourtestliving</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+                            </tr>
+                            <tr>
+                                <td><a href=""><span class="zotID"
+                                    >bm:Ellwardt2005TestDom</span></a></td>
+                                <td class="zotRef0"></td>
+                                <td class="zotRef1"></td>
+                                <td class="zotRef2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="container">
+                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
+                </div>
+            </section>
+            <section id="knownissues" class="row">
+                <div class="container">
+                    <p>Let's say you have found all bibliographic references needed in the group
+                        library, you have entered all your citations in the paper, you have compiled
+                        the bibliography in your file and.... the bibliography does not match
+                        perfectly the guidelines given by Aethiopica.</p>
+                    <p> There are some cases in which you might need to do some edits. Do them at
+                        the very end! Some of these can be fixed with a tool at the bottom of this
+                        page, but even in those cases, think well if it is not better and faster to
+                        simply edit manually what the HLCES Zotero Style offers you.</p>
+                </div>
+                <div class="col-md-12">
+                <div class="table-responsive container-fluid">
+                    <table class="table" id="examples">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Description</th>
+                                <th>Record in Zotero</th>
+                                <th>HLCES reference Style</th>
+                                <th>How it should be</th>
+                                <th>Differences</th>
+                                <th>HLCES citation Style</th>
+                                <th>How citation should be</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>The citation is wrong </td>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/B66AKH8J"
+                                            ><span class="zotID">bm:lepage2011testte</span></a></td>
+                                <td class="zotRef"></td>
+                                <td class="Wonnabe">Lepage, C. and J. Mercier 2011–2012. ‘Un
+                                    tétraévangile illustré éthiopien à cycle long du XVe siècle.
+                                    Codicologie et iconographie’, <i>Cahiers Archéologiques</i>, 54
+                                    (2011–2012), 99–174.</td>
+                                <td class="diff"></td>
+                                <td class="zotCit"></td>
+                                <td class="AeCit">Lepage, Mercier 2011–2012</td>
+
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>The date is wrong</td>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/B66AKH8J"
+                                            ><span class="zotID">Yahayanawu</span></a></td>
+                                <td class="zotRef"></td>
+                                <td class="Wonnabe">Märsǝʿe Ḫazän Wäldä Qirqos 2006/2007. <i>የሐያኛዉ
+                                        ክፍለ ዘመን መባቻ (Yäḥäyaňawu Kǝflä Zämän Mäbača)</i> (Addis
+                                    Ababa: Addis Ababa University Press, 1999 EC = 2006/2007
+                                    CE).</td>
+                                <td class="diff"></td>
+                                <td class="zotCit"></td>
+                                <td class="AeCit">Märsǝʿe Ḫazän Wäldä Qirqos 2006/2007</td>
+
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>The publication date is wrong</td>
+                                <td><a
+                                        href="https://www.zotero.org/groups/358366/ethiostudies/items/itemKey/5BN5SJEN"
+                                            ><span class="zotID">fourtestliving</span></a></td>
+                                <td class="zotRef"></td>
+                                <td class="Wonnabe">Chojnacki, S. 1976–1978. ‘The Four Living
+                                    Creatures of the Apocalypse and the Imagery of the Ascension in
+                                    Ethiopia’, <i>Bulletin de la Société d’archéologie Copte</i>, 23
+                                    (1976–1978, pub.1981), 159–181.</td>
+                                <td class="diff"></td>
+                                <td class="zotCit"></td>
+                                <td class="AeCit">Chojnacki 1976–1978</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>MA Thesis VS Diss.</td>
+                                <td><a href=""><span class="zotID"
+                                    >bm:Ellwardt2005TestDom</span></a></td>
+                                <td class="zotRef"></td>
+                                <td class="Wonnabe">Ellwardt, A. 2005. <i>Textkritische
+                                        Untersuchungen zu den syrischen und arabischen Redaktionen
+                                        der Apokalypse aus dem Testamentum Domini Nostri Jesu
+                                        Christi</i> (MA Thesis, Universität Tübingen, 2005).</td>
+                                <td class="diff"></td>
+                                <td class="zotCit"></td>
+                                <td class="AeCit">Ellwardt 2005</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+                <div class="container">
+                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
+                </div>
+            </section>
+            <section id="fixes" class="row">
+                <div class="container">
+                    <p>You can try to fix one to three with the tool below in this page.</p>
+                    <p>Enter here the unique tag of a bibliographic entry in Zotero EthioStudies
+                        Group to get a formatted reference and an author year citation</p><div
+                        class="col-md-6">
+                        <form>
+                            <input class="form-control" name="enter" id="textinput"
+                                style="width: 100%" placeholder="Enter here the Unique ID" />
+                        </form>
+                        <div class="col-md-12">
+                            <h3>Assumptions</h3>
+                            <ul>
+                                <li>You have a UNIQUE tag idenfitying the Zotero entry you want to
+                                    print</li>
+                                <li>If you have an ethiopic calendar date in Zotero, you have
+                                    entered it in the <code>extra</code> field as <q>EC 1999</q>
+                                </li>
+                                <li>If you have a second publication date (?) in Zotero, you have
+                                    entered it in the <code>extra</code> field as <q>pub. 1981</q>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12">
+                            <p class="col-md-12 lead">The full reference.</p>
+                            <div class="col-md-10 BZresults">
+                                <div class="col-md-12">
+                                    <div id="result"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary col-md-2" data-clipboard-target="#result"
+                                >copy</button>
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <p class="col-md-12 lead">The in-text citation.</p>
+                            <div class="col-md-10 BZresults">
+                                <div class="col-md-12">
+                                    <div id="cit"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary col-md-2" data-clipboard-target="#cit"
+                                >copy</button>
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <p class="col-md-12 lead">This is what you get with the HLCES Zotero
+                                Style.</p>
+                            <div class="col-md-10 BZresults">
+                                <div class="col-md-12">
+                                    <div id="HLCES"></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary col-md-2" data-clipboard-target="#HLCES"
+                                >copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
+                </div>
+            </section>
+            <section class="row text-center" id="newFeature">
+                <a role="button" class="btn btn-large btn-warning"
+                    href="https://github.com/BetaMasaheft/bibliography/issues/new?labels=zotero&amp;title=zoteroGenerator&amp;assignee=PietroLiuzzo&amp;body=In%20this%20example%20I%20get%20this%20with%20the%20HLCES%20style%20but%20I%20would%20like%20this%20"
+                    >ask a further feature or report a problem</a>
+            </section>
+            <!--            all with plenty of examples-->
+        </main>
+        <footer class="text-center">
+            <a role="button" class="btn btn-large btn-info" href="https://www.aai.uni-hamburg.de/en/ethiostudies/">Hiob Ludolf Centre for
+                Ethiopian Studies</a>
+        </footer>
         <script type="text/javascript" src="zoterobetter.js"></script>
+        <script type="text/javascript" src="diff.js"></script>
+        <script type="text/javascript" src="scroll.js"></script>
     </body>
 </html>
