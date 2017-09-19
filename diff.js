@@ -7,6 +7,21 @@ var styleNL= "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-names-l
 var styleCit = "&format=json&style=hiob-ludolf-centre-for-ethiopian-studies&include=citation";
 $(document).ready(function () {
     
+    $("#aethiopica").find('tr').each(function () {
+        var tag = $(this).find('span.zotID').text()
+
+         var ZotApiCall = apiurl + tag + style
+         
+        var zotRef = $(this).children('td.zotRef0')
+        
+        $.get(ZotApiCall, function (reference) {
+            var text = $(reference).find("div.csl-entry").html()
+            zotRef.html(text)
+        });
+        
+       
+    });
+    
     $("#diffstyles").find('tr').each(function () {
         var tag = $(this).find('span.zotID').text()
 
