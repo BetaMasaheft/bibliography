@@ -128,9 +128,12 @@ Nsur += fullnames[i].sur + ' '
                 if (extra.includes('EC')) {
                     ecdate += extra + ' = '; CE += ' CE'
                 }
+                if (extra.includes('H')) {
+                    ecdate += extra + ' = '; CE += ' CE'
+                }
                 if (extra.includes('pub')) {
                     pubdate += ', ' + extra
-                    console.log(pubdate)
+                    //console.log(pubdate)
                    }
                 if (data[ "0"].data.itemType == 'journalArticle') {
                     var pubtitle = data[ "0"].data.publicationTitle;
