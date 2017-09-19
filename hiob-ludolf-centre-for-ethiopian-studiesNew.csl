@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only" default-locale="en-GB">
   <info>
-    <title>Hiob Ludolf Centre for Ethiopian Studies Names Long</title>
-    <title-short>HLCES (Hamburg) Names Long </title-short>
-    <id>http://www.zotero.org/styles/hiob-ludolf-centre-for-ethiopian-studies-names-long</id>
-    <link href="http://www.zotero.org/styles/hiob-ludolf-centre-for-ethiopian-studies-names-long" rel="self"/>
+    <title>Hiob Ludolf Centre for Ethiopian Studies New</title>
+    <title-short>HLCES (Hamburg)</title-short>
+    <id>http://www.zotero.org/styles/hiob-ludolf-centre-for-ethiopian-studies-new</id>
+    <link href="http://www.zotero.org/styles/hiob-ludolf-centre-for-ethiopian-studies" rel="self"/>
     <link href="http://www1.uni-hamburg.de/COMST/bulletin.html" rel="documentation"/>
     <author>
       <name>Eugenia Sokolinski</name>
@@ -13,7 +13,7 @@
 <contributor>
       <name>Alessandro Bausi</name>
       <email>alessandro.bausi@uni-hamburg.de</email>
-    </contributor>
+</contributor>
     <contributor>
       <name>Pietro Liuzzo</name>
       <email>pietro.liuzzo@uni-hamburg.de</email>
@@ -38,14 +38,14 @@
         <single>ed.</single>
         <multiple>eds</multiple>
       </term>
-    <term name="translator" form="short">tr.</term>
+      <term name="translator" form="short">tr.</term>
     </terms>
   </locale>
   <macro name="container-contributors">
     <choose>
       <if type="chapter entry-encyclopedia paper-conference" match="any">
         <names variable="editor translator" delimiter=", " prefix=" ">
-          <name and="text"/>
+          <name and="text" initialize-with="."/>
           <label form="short" prefix=", " suffix=","/>
         </names>
       </if>
@@ -57,11 +57,11 @@
         <group delimiter=", " prefix=", ">
           <names variable="editor" delimiter=", ">
             <label form="short" plural="never" suffix=" "/>
-            <name and="text" sort-separator=""/>
+            <name and="text" initialize-with="." sort-separator=""/>
           </names>
           <names variable="translator">
             <label form="short" plural="always" suffix=" "/>
-            <name  sort-separator=""/>
+            <name initialize-with="." sort-separator=""/>
           </names>
         </group>
       </if>
@@ -69,7 +69,7 @@
   </macro>
   <macro name="author">
     <names variable="author">
-      <name and="text" delimiter-precedes-et-al="never" name-as-sort-order="first"/>
+      <name and="text" delimiter-precedes-et-al="never" initialize-with=". " name-as-sort-order="first"/>
       <label form="short" text-case="lowercase" prefix=", " suffix=","/>
       <substitute>
         <names variable="editor"/>
