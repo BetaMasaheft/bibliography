@@ -14,7 +14,7 @@
 
     <contributor>
       <name>Alessandro Bausi</name>
-      <email>Alessandro.Bausi@uni-hamburg.de</email>
+      <email>alessandro.bausi@uni-hamburg.de</email>
     </contributor>
     <contributor>
       <name>Pietro Liuzzo</name>
@@ -27,20 +27,17 @@
   </info>
   <locale xml:lang="en-GB">
     <terms>
-      <term name="ordinal">th</term>
-      <term name="ordinal-01">st</term>
-      <term name="ordinal-02">nd</term>
-      <term name="ordinal-03">rd</term>
-      <term name="ordinal-04">th</term>
-      <term name="ordinal-11">th</term>
-      <term name="ordinal-12">th</term>
-      <term name="ordinal-13">th</term>
       <term name="available at">see</term>
       <term name="editor" form="short">
         <single>ed.</single>
         <multiple>eds</multiple>
       </term>
     <term name="translator" form="short">tr.</term>
+    <term name="editortranslator" form="short">
+          <single>ed., tr.</single>
+          <multiple>eds, trans.</multiple>
+        </term>
+
     </terms>
   </locale>
   <macro name="container-contributors">
@@ -57,15 +54,11 @@
     <choose>
       <if type="chapter entry-encyclopedia paper-conference" match="none">
         <group delimiter=", " prefix=", ">
-          <names variable="editor" delimiter=", ">
-            <label form="short" plural="never" suffix=" "/>
+          <names variable="editor translator" delimiter=", ">
+            <label form="short" suffix=" "/>
             <name and="text" initialize-with="." sort-separator=""/>
           </names>
-          <names variable="translator">
-            <label form="short" plural="always" suffix=" "/>
-            <name initialize-with="." sort-separator=""/>
-          </names>
-        </group>
+          </group>
       </if>
     </choose>
   </macro>
@@ -144,7 +137,7 @@
   <macro name="publisher">
     <choose>
       <if type="thesis" match="any">
-        <group delimiter=", " prefix="(" suffix=")">
+        <group delimiter=", " prefix=", " suffix="">
           <text variable="genre"/>
           <group delimiter=": ">
             <text variable="publisher-place"/>
