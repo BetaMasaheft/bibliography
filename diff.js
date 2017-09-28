@@ -3,7 +3,7 @@
 var apiurl = "https://api.zotero.org/groups/358366/items?&tag=";
 var style = "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies";
 var styleURL = "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-with-url-doi";
-var styleNL= "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-names-long";
+var styleNL= "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-long-names";
 var styleCit = "&format=json&style=hiob-ludolf-centre-for-ethiopian-studies&include=citation";
 $(document).ready(function () {
     
