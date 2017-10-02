@@ -19,6 +19,13 @@ $(document).ready(function () {
             zotRef.html(text)
         });
         
+        var ZotApiCallCit = apiurl + tag + styleCit
+        var zotCit = $(this).children('td.zotCit')
+        $.getJSON(ZotApiCallCit, function (citation) {
+        console.log(citation["0"].citation)
+            var text = citation["0"].citation
+            zotCit.html(text)
+        });
        
     });
     
