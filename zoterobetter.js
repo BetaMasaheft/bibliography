@@ -132,7 +132,9 @@ Nsur += fullnames[i].sur + ' '
                     ecdate += extra + ' = '; CE += ' CE'
                 }
                 if (extra.includes('pub')) {
-                    pubdate += ', ' + extra
+                var regexPub = /pub\.\s\d+/;
+                var pub = extra.match(regexPub)
+                    pubdate += ', ' + pub
                     //console.log(pubdate)
                    }
                 if (data[ "0"].data.itemType == 'journalArticle') {
