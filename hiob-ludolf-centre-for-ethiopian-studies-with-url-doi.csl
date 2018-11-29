@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only" default-locale="en-GB">
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="sort-only">
   <info>
     <title>Hiob Ludolf Centre for Ethiopian Studies (with URL/DOI)</title>
     <title-short>HLCES (Hamburg)</title-short>
@@ -20,7 +20,7 @@
     </contributor>
     <category citation-format="author-date"/>
     <category field="humanities"/>
-    <updated>2017-10-02T08:36:15+00:00</updated>
+    <updated>2017-11-24T03:45:22+00:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="en-GB">
@@ -37,11 +37,26 @@
       </term>
     </terms>
   </locale>
+
+<locale xml:lang="de">
+    <terms>
+      <term name="available at">siehe</term>
+      <term name="editor" form="short">
+        <single>hrsg.</single>
+        <multiple>hrsg.</multiple>
+      </term>
+      <term name="translator" form="short">übers.</term>
+      <term name="editortranslator" form="short">
+        <single>hrsg., übers.</single>
+        <multiple>hrsg., übers.</multiple>
+      </term>
+    </terms>
+  </locale>
   <macro name="container-contributors">
     <choose>
       <if type="chapter entry-encyclopedia paper-conference" match="any">
         <names variable="editor translator" delimiter=", " prefix=" ">
-          <name and="text" initialize-with="."/>
+          <name and="text" initialize-with=". "/>
           <label form="short" prefix=", " suffix=","/>
         </names>
       </if>
@@ -53,7 +68,7 @@
         <group delimiter=", " prefix=", ">
           <names variable="editor translator" delimiter=", ">
             <label form="short" suffix=" "/>
-            <name and="text" initialize-with="." sort-separator=""/>
+            <name and="text" initialize-with=". " sort-separator=""/>
           </names>
         </group>
       </if>
@@ -61,7 +76,7 @@
   </macro>
   <macro name="author">
     <names variable="author">
-      <name and="text" delimiter-precedes-et-al="never" initialize-with="." name-as-sort-order="first"/>
+      <name and="text" delimiter-precedes-et-al="never" initialize-with=". " name-as-sort-order="first"/>
       <label form="short" text-case="lowercase" prefix=", " suffix=","/>
       <substitute>
         <names variable="editor"/>
@@ -70,9 +85,9 @@
       </substitute>
     </names>
   </macro>
- <macro name="author-with-initials">
+  <macro name="author-with-initials">
     <names variable="author">
-      <name and="text" delimiter-precedes-et-al="never" initialize-with="." sort-separator=" "/>
+      <name and="text" delimiter-precedes-et-al="never" initialize-with=". " sort-separator=" "/>
       <label form="short" text-case="lowercase" prefix=", " suffix=","/>
       <substitute>
         <names variable="editor"/>
@@ -113,7 +128,7 @@
                     <date-part name="year" prefix=" "/>
                   </date>
                 </if>
-                </choose>
+              </choose>
             </group>
           </if>
         </choose>
@@ -133,7 +148,11 @@
         <text variable="title" font-style="italic"/>
         <group prefix=" (" suffix=") ">
           <text variable="genre"/>
-          <choose><if variable="number"><text variable="number" prefix=" No. "/></if></choose>
+          <choose>
+            <if variable="number">
+              <text variable="number" prefix=" No. "/>
+            </if>
+          </choose>
         </group>
       </if>
       <else-if type="bill book graphic legal_case legislation manuscript motion_picture report song speech webpage thesis" match="any">
@@ -211,15 +230,18 @@
   <macro name="issued">
     <choose>
       <if type="webpage" match="none">
-        <choose><if variable="issued">
-        <date variable="issued">
-          <date-part name="year"/>
-        </date>
-      </if>
+        <choose>
+          <if variable="issued">
+            <date variable="issued">
+              <date-part name="year"/>
+            </date>
+          </if>
           <else>
-        <text term="no date" form="short"/>
-      </else></choose></if>
-      </choose>
+            <text term="no date" form="short"/>
+          </else>
+        </choose>
+      </if>
+    </choose>
   </macro>
   <macro name="issued-year">
     <choose>
@@ -293,19 +315,18 @@
       <choose>
         <if type="entry-encyclopedia">
           <group delimiter=", ">
-            <text variable="title" quotes="true"></text>
+            <text variable="title" quotes="true"/>
             <text variable="title-short" font-style="italic"/>
             <group delimiter=" ">
-              <text variable="volume"></text>
+              <text variable="volume"/>
               <text macro="issued-year" prefix=" (" suffix=")"/>
             </group>
             <text variable="page"/>
             <text macro="citation-locator"/>
           </group>
-          <text macro="author-with-initials" prefix=" (" suffix=")"></text>
+          <text macro="author-with-initials" prefix=" (" suffix=")"/>
         </if>
         <else>
-       
           <group delimiter=", ">
             <group delimiter=" ">
               <text macro="author-short"/>
@@ -313,7 +334,7 @@
             </group>
             <text macro="citation-locator"/>
           </group>
-      </else>
+        </else>
       </choose>
     </layout>
   </citation>
@@ -323,13 +344,17 @@
       <key macro="issued-year" sort="ascending"/>
     </sort>
     <layout>
-      <choose><if type="book" match="any">
-        <choose><if variable="title-short" match="any">
-          <group suffix=". ">
-            <text variable="title-short"></text>
-          </group>
-        </if></choose>
-      </if></choose>
+      <choose>
+        <if type="book" match="any">
+          <choose>
+            <if variable="title-short" match="any">
+              <group suffix=". ">
+                <text variable="title-short"/>
+              </group>
+            </if>
+          </choose>
+        </if>
+      </choose>
       <group suffix=".">
         <text macro="author"/>
         <text macro="issued" prefix=" " suffix="."/>
