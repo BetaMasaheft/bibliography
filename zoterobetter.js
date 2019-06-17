@@ -155,7 +155,7 @@ Nsur += fullnames[i].sur + ' '
                 }
                 citation += ' ' + dformat // add date
                 
- var style = "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies"
+ var style = "&format=bib&locale=en-GB&style=hiob-ludolf-centre-for-ethiopian-studies"
  var call = apiurl + tag + style
  console.log(call)
                 $.get(call, function (citation) {
