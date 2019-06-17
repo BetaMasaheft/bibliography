@@ -1,9 +1,9 @@
 //https://stackoverflow.com/questions/3065342/how-do-i-iterate-through-table-rows-and-cells-in-javascript
 //https://stackoverflow.com/questions/10539162/using-jquery-to-see-if-a-div-has-a-child-with-a-certain-class
 var apiurl = "https://api.zotero.org/groups/358366/items?&tag=";
-var style = "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies";
-var styleURL = "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-with-url-doi";
-var styleNL= "&format=bib&style=hiob-ludolf-centre-for-ethiopian-studies-long-names";
+var style = "&format=bib&locale=en-GB&style=hiob-ludolf-centre-for-ethiopian-studies";
+var styleURL = "&format=bib&locale=en-GB&style=hiob-ludolf-centre-for-ethiopian-studies-with-url-doi";
+var styleNL= "&format=bib&locale=en-GB&style=hiob-ludolf-centre-for-ethiopian-studies-long-names";
 var styleCit = "&format=json&style=hiob-ludolf-centre-for-ethiopian-studies&include=citation";
 $(document).ready(function () {
     
