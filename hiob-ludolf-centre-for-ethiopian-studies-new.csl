@@ -307,6 +307,9 @@
       </choose>
     </group>
   </macro>
+<macro name="exlocators">
+<choose><if type="article-newspaper"><text macro="locators" prefix=" "/></if><else><text macro="locators" prefix=", "/></else></choose>
+</macro>
   <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true" givenname-disambiguation-rule="by-cite" collapse="year">
     <sort>
       <key macro="author"/>
@@ -391,9 +394,12 @@
           <group>          
              <text variable="container-title" font-style="italic" prefix=" "/>
 <choose>
-              <if type="article article-journal article-magazine article-newspaper" match="any">
+              <if type="article article-journal article-magazine" match="any">
                 <text value=","/>
               </if>
+<else-if type="article-newspaper" match="any">
+                <text value=" "/>
+              </else-if>
               <else-if type="paper-conference" match="any">
                 <group prefix=", ">
                   <number variable="volume"/>
@@ -410,7 +416,7 @@
             <text variable="collection-title"/>
             <number variable="collection-number"/>
           </group>
-          <text macro="locators" prefix=", "/>
+          <text macro="exlocators"/>
         </group>
         <group delimiter=", " prefix=" ">
           <text macro="event"/>
