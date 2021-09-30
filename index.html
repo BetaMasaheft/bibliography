@@ -81,7 +81,7 @@
                             <li><a class="page-scroll" href="#conformance">Aethiopica
                                     conformance</a></li>
                             <li><a class="page-scroll" href="#knownissues">Known Issues</a></li>
-                            <li><a class="page-scroll" href="#fixes">Instructions</a></li>
+
                         </ul>
                     </div>
                 </div>
@@ -672,81 +672,7 @@
                     <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
                 </div>
             </section>
-            <section id="fixes" class="row">
-                <div class="container"><h2>Fixes</h2></div>
-                <div class="container lead">
-                    <p>After you have completed your bibliography, <a target="_blank"
-                        href="http://betamasaheft.eu/Guidelines/?id=zotero">curated
-                        your data following the
-                        guidelines</a> etc. then you can still fix some of the issues above here instead
-                        of doing that entirely by hand, if you want.</p>
-                    <p>You can try to fix 1,2,3 with the tool below in this page. You will need to
-                        have a UNIQUE tag identifying the Zotero entry you want to print, like the
-                        ones in the tables. Then make sure you do the following (you can check the
-                        examples above where this has been already done for example):</p>
-                    <ul>
-                        <li>If you have an ethiopic or an Hegira calendar date in Zotero, you have to enter it in
-                            the <code>extra</code> field as <q>1999 EC</q> or <q>1403 H</q>, <a target="_blank"
-                                href="http://betamasaheft.eu/Guidelines/?id=zotero">see point 23 of the data entry guidelines</a> [fix for known issue
-                            #1 and #2]</li>
-                        <li>If you have a second publication date in Zotero, you have to enter it in
-                            the <code>extra</code> field as <q>pub. 1981</q> [fix for known issue
-                            #3]</li>
-                    </ul>
-                    <p> Now you can enter here the unique tag of a bibliographic entry in Zotero
-                        EthioStudies Group to get a formatted reference and an author year citation
-                        with the fix. Simply replace the entry in your text with the new one.</p>
-                    <p>Issue #4 is very rare, please fix it by hand in the bibliography. If you have correctly entered the data there should be no author (as in the example) and you will have to add "Anon." in the bibliography. Citations will be correct as they are.)</p>
-                    <p>Issue #5 awaits a more clever solution in the linked issue, for the time being, please enter the information in the extra field and edit your record by hand.</p>
-                    <div class="col-md-6">
-                        <form>
-                            <input class="form-control" name="enter" id="textinput"
-                                style="width: 100%" placeholder="Enter here the Unique ID" />
-                        </form>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="col-md-12">
-                            <p class="col-md-12 lead">The fixed reference.</p>
-                            <div class="col-md-10 BZresults">
-                                <div class="col-md-12">
-                                    <div id="result"></div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary col-md-2" data-clipboard-target="#result"
-                                >copy</button>
-                        </div>
-                        <hr />
-                        <div class="col-md-12">
-                            <p class="col-md-12 lead">The fixed citation.</p>
-                            <div class="col-md-10 BZresults">
-                                <div class="col-md-12">
-                                    <div id="cit"></div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary col-md-2" data-clipboard-target="#cit"
-                                >copy</button>
-                        </div>
-                        <hr />
-                        <div class="col-md-12">
-                            <p class="col-md-12 lead">This is what you get with the HLCES Zotero
-                                Style.</p>
-                            <div class="col-md-10 BZresults">
-                                <div class="col-md-12">
-                                    <div id="HLCES"></div>
-                                </div>
-                            </div>
-                            <button class="btn btn-primary col-md-2" data-clipboard-target="#HLCES"
-                                >copy</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <a title="Back to top" href="#top-of-page" class="page-scroll">▲</a>
-                </div><div class="container text-center"><a role="button"
-                        class="btn btn-large btn-warning"
-                        href="https://github.com/BetaMasaheft/bibliography/issues/new?labels=zotero&amp;title=zoteroGenerator&amp;assignee=PietroLiuzzo&amp;body=In%20this%20example%20I%20get%20this%20with%20the%20HLCES%20style%20but%20I%20would%20like%20this%20"
-                        >ask a further feature or report a problem</a></div>
-            </section>
+
             <section id="ExampleWorkflow" class="row">
                 <div class="container"><h2>Example workflow</h2></div>
                 <div class="container lead">
@@ -772,8 +698,6 @@
                             Group Library go on to the manual editing phase.</li>
                         <li>Unlink your article from the database, to avoid mistakenly updating and
                             thus loosing your edits.</li>
-                        <li>Check if the remaining issues can be <a href="#fixes">fixed
-                            here</a></li>
                         <li>Make sure you do not have cases as the above listed in <a
                                 href="#knowissues">known issues</a> and if so, correct
                             accordingly</li>
@@ -799,7 +723,6 @@
                 href="https://www.aai.uni-hamburg.de/en/ethiostudies/">Hiob Ludolf Centre for
                 Ethiopian Studies</a>
         </footer>
-        <script type="text/javascript" src="zoterobetter.js"></script>
         <script type="text/javascript" src="diff.js"></script>
         <script type="text/javascript" src="scroll.js"></script>
     </body>
