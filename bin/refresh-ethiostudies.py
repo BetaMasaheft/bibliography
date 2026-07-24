@@ -1,23 +1,22 @@
 #!/usr/bin/env python3
-"""Fetch all top-level items from Zotero group 358366 as TEI, merge into
+"""Fetch top-level items from Zotero group 358366 as TEI, merge into
 EthioStudies.xml.
 
-format=tei matches this file's existing shape exactly (same <listBibl>/
-<biblStruct> structure, same xml:id scheme - Zotero generates both) and is
-the same format expand.xqm's own live fallback already calls per-tag
-(BetMasWeb modules/expand.xqm). This is a bulk equivalent of that call, run
+Same format=tei/biblStruct shape expand.xqm's live fallback already calls
+per-tag (BetMasWeb modules/expand.xqm) - this is a bulk equivalent, run
 ahead of time and committed as a local cache.
 
-Zotero's format=tei translator 500s on some (start, limit) windows
-regardless of limit size (confirmed empirically: limit=100 fails past the
-first page, limit=50 mostly works but still 500s on isolated windows) -
-looks like specific items choking the translator, not a pure size/rate
-limit. Handles this by bisecting a failing window down to individual items
-and skipping (logging) any single item that still 500s, rather than
-aborting the whole run.
+format=tei 500s on some (start, limit) windows regardless of limit size -
+some items choke the translator. Bisects a failing window down to
+individual items and skips (logs) any single item that still 500s.
+
+Zotero's own xml:id (author-year citekey) is disambiguated per request,
+not globally, so paginated fetches produce duplicate ids across pages.
+Replaced with item_<zotero-key> (from each entry's own corresp URL) after
+merging - always unique, always a valid NCName.
 
 Usage: python3 bin/refresh-ethiostudies.py
-Env: MAX_PAGES=N to stop after N top-level page windows (manual testing).
+Env: MAX_PAGES=N to stop after N page windows (manual testing).
 """
 import os
 import re
@@ -31,6 +30,9 @@ PAGE_LIMIT = 50
 MAX_PAGES = int(os.environ.get("MAX_PAGES", "0")) or None
 OUT_PATH = os.environ.get("OUT_PATH", "EthioStudies.xml")
 LISTBIBL_RE = re.compile(r"<listBibl[^>]*>(.*)</listBibl>", re.S)
+XML_ID_RE = re.compile(
+    r'xml:id="[^"]*"(\s+corresp="http://zotero\.org/groups/358366/items/([A-Za-z0-9]+)")'
+)
 
 
 def fetch(start, limit, retries=3):
@@ -90,11 +92,11 @@ def main():
         if total is not None and start >= int(total):
             break
 
+    body = "".join(chunks)
+    body = XML_ID_RE.sub(r'xml:id="item_\2"\1', body)
     merged = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<listBibl xmlns="http://www.tei-c.org/ns/1.0">'
-        + "".join(chunks)
-        + "</listBibl>\n"
+        '<listBibl xmlns="http://www.tei-c.org/ns/1.0">' + body + "</listBibl>\n"
     )
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(merged)
