@@ -1,0 +1,35 @@
+.github/workflows/re-export.yml
+  s_f621eb37f8854e::t_985563b0a7583d 1-95
+repo.xml
+  s_f621eb37f8854e::t_8a05f4ece26bd3 1-10
+build.xml
+  s_f621eb37f8854e::t_800e64448d6a87 1-23
+.gitignore
+  s_f621eb37f8854e::t_b55429fd3249b1 1-2
+.github/workflows/validate_push.yml
+  s_f621eb37f8854e::t_043ef7cf40000a 1-29
+expath-pkg.xml
+  s_f621eb37f8854e::t_db756c35d9f4d8 1-6
+.github/dependabot.yml
+  s_f621eb37f8854e::t_1a748001095b76 1-11
+.github/workflows/validate_pr.yml
+  s_f621eb37f8854e::t_1238fe4426b52e 1-22
+.github/workflows/smoke.yml
+  s_f621eb37f8854e::t_22979f79cc2c4a 1-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "9bdc89de602e8641470d3820b1a9161709f9b6ce",
+  "prompts": {},
+  "sessions": {
+    "s_f621eb37f8854e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "50c55e94-39a7-4bfc-8532-53c810e8d334",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
