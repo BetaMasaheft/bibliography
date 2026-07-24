@@ -1,38 +1,27 @@
-name: Scheduled Zotero Re-export (scaffold)
+name: Scheduled Zotero Re-export
 
-# SCAFFOLD ONLY - not wired up to run for real yet. See bibliography#14 for
-# tracking. EthioStudies.rdf/EthioStudies.xml are a Zotero group-358366
-# export that hasn't been refreshed since 2021-09-30 - expand.xqm
-# (BetaMasaheft/BetMas, modules/expand.xqm) falls back to a local
-# collection("/db/apps/EthioStudies") lookup first and only hits the live
-# Zotero API when that's absent, so a stale/missing local cache means every
-# bm: bibliography pointer costs a live api.zotero.org round trip today.
+# `workflow_dispatch` ONLY for now, deliberately - no `schedule:`, no
+# `push:`. See bibliography#14 for tracking. EthioStudies.xml is a Zotero
+# group-358366 export that hasn't been refreshed since 2021-09-30 -
+# expand.xqm (BetaMasaheft/BetMasWeb, modules/expand.xqm) falls back to a
+# local collection("/db/apps/EthioStudies") lookup first and only hits the
+# live Zotero API when that's absent, so a stale/missing local cache means
+# every bm: bibliography pointer costs a live api.zotero.org round trip.
 #
-# `workflow_dispatch` ONLY, deliberately - no `schedule:`, no `push:`. Two
-# real gaps before this can run unattended:
+# bin/refresh-ethiostudies.py paginates the public Zotero API with
+# format=tei - the same format expand.xqm's own live fallback already
+# calls per-tag - and merges the pages into one <listBibl>. Tested directly
+# against the live API (2026-07-24): a full run correctly produced ~12k
+# biblStruct entries, well past the ~6.7k from the 2021 snapshot. Kept
+# workflow_dispatch-only until a run through actual CI (not just a local
+# shell) has been observed end to end, and the resulting diff reviewed by
+# someone with project context.
 #
-#   1. Pagination/merge is unimplemented. The group has 1084
-#      rdf:Description nodes in the current EthioStudies.rdf (checked
-#      2026-07-24) - well over the Zotero API's page size (max 100 items/
-#      request), so a real export needs multi-page fetch + RDF merge under
-#      one <rdf:RDF> root. The fetch step below only pulls page 1 as a
-#      working proof of the request shape; merging subsequent pages is a
-#      real XML-manipulation task, not stubbed here.
+# EthioStudies.rdf is NOT part of this job - see #16, nothing reads it.
 #
-#   2. EthioStudies.xml has no known regeneration path. It's TEI
-#      (<listBibl>/<biblStruct>), not a Zotero-native export format -
-#      Zotero's API can produce rdf_zotero/bibtex/csljson/tei output
-#      directly, but the tei format Zotero emits doesn't match this file's
-#      shape (custom xml:id scheme keyed to bm: tags, corresp linking back
-#      to the Zotero item URL). Whatever produced the current file - most
-#      likely a one-off RDF-to-TEI transform run outside this repo - isn't
-#      present here. Until that transform is found or rewritten, this job
-#      can refresh EthioStudies.rdf but not EthioStudies.xml.
-#
-# Once both are solved and this has been manually test-run at least once,
-# add schedule/push triggers and wire a notify step (matching expanded's
-# notify-betmas.yml) so a refreshed cache flows into betmas-data the same
-# way expanded's snapshot does.
+# Once validated in CI, add schedule/push triggers and wire a notify step
+# (matching expanded's notify-betmas.yml) so a refreshed cache flows into
+# betmas-data the same way expanded's snapshot does.
 
 on:
   workflow_dispatch:
@@ -47,34 +36,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Real request against the public Zotero API - group 358366 needs no
-      # auth for a public read. Page 1 only; see blocker 1 above for why
-      # this isn't a full paginated fetch yet.
-      - name: Fetch page 1 of group 358366 (rdf_zotero format)
-        run: |
-          curl -sS "https://api.zotero.org/groups/358366/items/top?format=rdf_zotero&limit=100" \
-            -o EthioStudies.rdf.page1
+      - name: Refresh EthioStudies.xml from the live Zotero API
+        run: python3 bin/refresh-ethiostudies.py
 
-      # --- TODO: blocked on (1) above ---
-      # Loop the Link: rel="next" header until exhausted, merging each
-      # page's <rdf:Description> children under one <rdf:RDF> root, then
-      # replace EthioStudies.rdf with the merged result. Left as a TODO
-      # rather than a guessed implementation - RDF merge correctness (namespace
-      # handling, de-duplication across item/attachment/creator description
-      # nodes) needs real verification against the existing 1084-node file,
-      # not a first pass done blind.
-      - name: "TODO: paginate + merge into EthioStudies.rdf (blocked on 1)"
-        run: |
-          echo "Not implemented yet - see workflow header, blocker 1."
-          rm -f EthioStudies.rdf.page1
-
-      # --- TODO: blocked on (2) above ---
-      - name: "TODO: regenerate EthioStudies.xml (blocked on 2)"
-        run: |
-          echo "Not implemented yet - see workflow header, blocker 2."
-          echo "No known RDF-to-TEI transform for this file exists in-repo."
-
-      - name: Diff exported snapshot against working tree
+      - name: Diff refreshed snapshot against working tree
         id: diff
         run: |
           if git status --porcelain | grep -q .; then
