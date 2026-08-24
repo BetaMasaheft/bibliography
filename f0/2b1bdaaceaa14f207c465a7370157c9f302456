@@ -1,0 +1,27 @@
+.github/workflows/re-export.yml
+  s_1544e160683453::t_2a163e969aa69c 41
+README.md
+  s_1544e160683453::t_44280d22d2f47e 3,5-31
+.gitignore
+  s_1544e160683453::t_488d81a900b341 3-5
+repo.xml
+  s_1544e160683453::t_91b0333d4ac15b 3
+build.xml
+  s_1544e160683453::t_ef6fa0bd27abed 7-11,19-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "f02b1bdaaceaa14f207c465a7370157c9f302456",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
