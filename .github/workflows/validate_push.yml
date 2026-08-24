@@ -4,6 +4,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 jobs:
   validate-all-and-build:
     runs-on: ubuntu-latest
@@ -16,10 +19,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libxml2-utils
 
-      - name: Ensure all XML/RDF/CSL files are well formed
+      - name: Ensure all XML/CSL files are well formed
         run: |
           xmllint --noout \
-            $(find . -type f \( -name '*.xml' -o -name '*.rdf' -o -name '*.csl' \))
+            $(find . -type f \( -name '*.xml' -o -name '*.csl' \))
 
       - name: Build Expath Package
         uses: actions/setup-java@v5

@@ -15,9 +15,14 @@
             <exclude name="${build.dir}/**" />
             <exclude name=".github/**" />
             <exclude name=".vscode/**" />
+            <exclude name=".cursor/**" />
+            <exclude name=".codacy/**" />
             <exclude name=".gitignore" />
             <exclude name=".dockerignore" />
             <exclude name=".DS_Store" />
+            <exclude name="index.html" />
+            <exclude name="*.js" />
+            <exclude name="bin/**" />
         </zip>
     </target>
 </project>
