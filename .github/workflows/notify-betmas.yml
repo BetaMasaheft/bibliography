@@ -1,0 +1,24 @@
+name: Notify BetMas
+
+# Tells BetMas's data-base-image build that bibliography's master branch
+# moved, so it can pick up the new EthioStudies snapshot.
+# BetMas/build-data.yml listens for repository_dispatch:
+# types: [bibliography-updated].
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch bibliography-updated to BetMas
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_PAT }}
+        run: |
+          gh api repos/BetaMasaheft/BetMas/dispatches \
+            -f event_type=bibliography-updated
