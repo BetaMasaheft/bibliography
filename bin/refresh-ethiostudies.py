@@ -7,9 +7,9 @@ EthioStudies.xml (format=tei)
     Zotero's current format=tei translator omits those tag notes, so tags
     are fetched as format=json and injected after merge.
 
-citations.xml (format=json include=bib)
-    string:Zotero() needs pre-styled CSL HTML keyed by bm: tag
-    (style=hiob-ludolf-centre-for-ethiopian-studies&linkwrap=1).
+citations.xml + citations-url-doi.xml + citations-short*.xml
+    citeproc-js (bin/render-citations.js) renders this repo's CSL against
+    CSL-JSON. Zotero is the item source, not the CSL processor.
 
 format=tei 500s on some windows; bisects and skips lone bad items.
 
@@ -17,27 +17,29 @@ xml:id is rewritten to item_<zotero-key> after merge (citekeys collide
 across paginated requests).
 
 Usage: python3 bin/refresh-ethiostudies.py
-Env: MAX_PAGES=N (test), SKIP_TEI=1 (citations.xml only).
+Env: MAX_PAGES=N (test), SKIP_TEI=1 (citations only), SKIP_RENDER=1,
+     CSLJSON_PATH=build/ethiostudies.csl.json.
 """
 import html
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
 
 BASE = "https://api.zotero.org/groups/358366/items/top"
 PAGE_LIMIT = 50
 JSON_LIMIT = 100
-BIB_STYLE = "hiob-ludolf-centre-for-ethiopian-studies"
 MAX_PAGES = int(os.environ.get("MAX_PAGES", "0")) or None
 SKIP_TEI = os.environ.get("SKIP_TEI", "") in ("1", "true", "yes")
+SKIP_RENDER = os.environ.get("SKIP_RENDER", "") in ("1", "true", "yes")
 OUT_PATH = os.environ.get("OUT_PATH", "EthioStudies.xml")
-CITATIONS_PATH = os.environ.get("CITATIONS_PATH", "citations.xml")
+CSLJSON_PATH = os.environ.get("CSLJSON_PATH", "build/ethiostudies.csl.json")
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(HERE)
 LISTBIBL_RE = re.compile(r"<listBibl[^>]*>(.*)</listBibl>", re.S)
 XML_ID_RE = re.compile(
     r'xml:id="[^"]*"(\s+corresp="http://zotero\.org/groups/358366/items/([A-Za-z0-9]+)")'
@@ -47,13 +49,46 @@ BIBLSTRUCT_RE = re.compile(
     r'([A-Za-z0-9]+)"[^>]*>)(.*?)(</biblStruct>)',
     re.S,
 )
-CSL_ENTRY_RE = re.compile(r'<div class="csl-entry"[^>]*>(.*?)</div>', re.S)
 UA = {"User-Agent": "BetaMasaheft-bibliography-refresh"}
-JSON_BIB_QS = (
-    "&include=bib,data"
-    f"&style={urllib.parse.quote(BIB_STYLE)}"
-    "&linkwrap=1"
-)
+
+
+def valid_bm_tag(tag):
+    return (
+        isinstance(tag, str)
+        and tag.startswith("bm:")
+        and tag != "bm:"
+        and " " not in tag
+    )
+
+
+def csl_item_key(item):
+    ident = str((item or {}).get("id") or "")
+    return ident.rsplit("/", 1)[-1]
+
+
+def parse_csljson(body):
+    if isinstance(body, list):
+        return body
+    if isinstance(body, dict) and isinstance(body.get("items"), list):
+        return body["items"]
+    raise ValueError("unexpected CSL-JSON shape")
+
+
+def join_by_tag(tags_by_key, csl_items):
+    by_key = {}
+    for item in csl_items:
+        key = csl_item_key(item)
+        if key:
+            by_key[key] = item
+    out = {}
+    for key, tags in tags_by_key.items():
+        item = by_key.get(key)
+        if item is None:
+            continue
+        for tag in tags:
+            if valid_bm_tag(tag) and tag not in out:
+                out[tag] = item
+    return out
 
 
 def fetch(start, limit, fmt="tei", extra="", retries=3):
@@ -69,14 +104,68 @@ def fetch(start, limit, fmt="tei", extra="", retries=3):
                 backoff = resp.headers.get("Backoff")
                 if backoff:
                     time.sleep(float(backoff))
-                if fmt == "json":
-                    return json.loads(raw.decode("utf-8")), total
-                return raw.decode("utf-8"), total
+                text = raw.decode("utf-8")
+                if fmt in ("json", "csljson"):
+                    return json.loads(text), total
+                return text, total
         except urllib.error.HTTPError as e:
             if e.code == 500 and attempt < retries:
                 time.sleep(1.5 * attempt)
                 continue
             raise
+
+
+def paginate(fmt, extra=""):
+    start = 0
+    pages = 0
+    total = None
+    while True:
+        pages += 1
+        body, header_total = fetch(start, JSON_LIMIT, fmt=fmt, extra=extra)
+        if total is None and header_total is not None:
+            total = int(header_total)
+        yield body, total
+        start += JSON_LIMIT
+        time.sleep(0.3)
+        if MAX_PAGES and pages >= MAX_PAGES:
+            break
+        if total is not None and start >= total:
+            break
+        if fmt == "csljson":
+            if len(parse_csljson(body)) == 0:
+                break
+        elif not body:
+            break
+
+
+def fetch_tags_by_key():
+    tags_by_key = {}
+    for items, total in paginate("json"):
+        for item in items:
+            data = item.get("data") or {}
+            key = data.get("key") or item.get("key")
+            if not key:
+                continue
+            tags_by_key[key] = [
+                t["tag"] for t in data.get("tags") or [] if t.get("tag")
+            ]
+        print(
+            f"  json window: {len(tags_by_key)} keys (total-results={total})",
+            file=sys.stderr,
+        )
+    return tags_by_key
+
+
+def fetch_csl_items():
+    items = []
+    for body, total in paginate("csljson"):
+        chunk = parse_csljson(body)
+        items.extend(chunk)
+        print(
+            f"  csljson window: {len(items)} items (total-results={total})",
+            file=sys.stderr,
+        )
+    return items
 
 
 def fetch_window(start, limit, total_results_box):
@@ -108,71 +197,6 @@ def fetch_window(start, limit, total_results_box):
         )
 
 
-def extract_csl_entry(bib_html):
-    m = CSL_ENTRY_RE.search(bib_html or "")
-    if not m:
-        return None
-    # No default xmlns: string:Zotero() / string:tei2string match element(a|i).
-    frag = f'<div class="csl-entry">{m.group(1)}</div>'
-    try:
-        ET.fromstring(frag)
-    except ET.ParseError:
-        return None
-    return frag
-
-
-def fetch_json_index():
-    """Return (tags_by_key, bib_by_bm_tag) from format=json include=bib."""
-    tags_by_key = {}
-    bib_by_tag = {}
-    start = 0
-    pages = 0
-    total = None
-    skipped_bib = 0
-    while True:
-        pages += 1
-        items, header_total = fetch(
-            start, JSON_LIMIT, fmt="json", extra=JSON_BIB_QS
-        )
-        if total is None and header_total is not None:
-            total = int(header_total)
-        for item in items:
-            data = item.get("data") or {}
-            key = data.get("key") or item.get("key")
-            if not key:
-                continue
-            tags = [t["tag"] for t in data.get("tags") or [] if t.get("tag")]
-            tags_by_key[key] = tags
-            entry = extract_csl_entry(item.get("bib") or "")
-            if entry is None:
-                skipped_bib += 1
-                continue
-            for tag in tags:
-                if (
-                    tag.startswith("bm:")
-                    and tag != "bm:"
-                    and " " not in tag
-                    and tag not in bib_by_tag
-                ):
-                    bib_by_tag[tag] = entry
-        print(
-            f"  json+bib window start={start} limit={JSON_LIMIT}: "
-            f"+{len(items)} items ({len(tags_by_key)} keys, "
-            f"{len(bib_by_tag)} bm: citations)",
-            file=sys.stderr,
-        )
-        start += JSON_LIMIT
-        time.sleep(0.3)
-        if MAX_PAGES and pages >= MAX_PAGES:
-            break
-        if total is not None and start >= total:
-            break
-        if not items:
-            break
-    print(f"  skipped malformed bib blobs: {skipped_bib}", file=sys.stderr)
-    return tags_by_key, bib_by_tag
-
-
 def inject_tags(body, tags_by_key):
     injected = 0
 
@@ -191,24 +215,21 @@ def inject_tags(body, tags_by_key):
     return BIBLSTRUCT_RE.sub(repl, body), injected
 
 
-def write_citations(bib_by_tag):
-    parts = [
-        '<?xml version="1.0" encoding="UTF-8"?>\n',
-        '<citations xmlns="https://betamasaheft.eu/bibliography">\n',
-    ]
-    for tag in sorted(bib_by_tag):
-        parts.append(
-            f'  <citation tag="{html.escape(tag, quote=True)}">'
-            f"{bib_by_tag[tag]}</citation>\n"
-        )
-    parts.append("</citations>\n")
-    body = "".join(parts)
-    ET.fromstring(body)
-    with open(CITATIONS_PATH, "w", encoding="utf-8") as f:
-        f.write(body)
+def render_citations(items_by_tag):
+    os.makedirs(os.path.dirname(os.path.abspath(CSLJSON_PATH)) or ".", exist_ok=True)
+    with open(CSLJSON_PATH, "w", encoding="utf-8") as f:
+        json.dump(items_by_tag, f, ensure_ascii=False)
     print(
-        f"wrote {len(bib_by_tag)} bm: citations to {CITATIONS_PATH}",
+        f"wrote {len(items_by_tag)} bm: items to {CSLJSON_PATH}",
         file=sys.stderr,
+    )
+    if SKIP_RENDER:
+        print("SKIP_RENDER set, not running citeproc", file=sys.stderr)
+        return
+    script = os.path.join(HERE, "render-citations.js")
+    subprocess.run(
+        ["node", script, os.path.abspath(CSLJSON_PATH), REPO_ROOT],
+        check=True,
     )
 
 
@@ -246,9 +267,15 @@ def write_tei(tags_by_key):
 
 
 def main():
-    print("fetching JSON tags + styled bib...", file=sys.stderr)
-    tags_by_key, bib_by_tag = fetch_json_index()
-    write_citations(bib_by_tag)
+    print("fetching JSON tags + CSL-JSON...", file=sys.stderr)
+    tags_by_key = fetch_tags_by_key()
+    csl_items = fetch_csl_items()
+    items_by_tag = join_by_tag(tags_by_key, csl_items)
+    print(
+        f"joined {len(items_by_tag)} bm: tags from {len(csl_items)} CSL items",
+        file=sys.stderr,
+    )
+    render_citations(items_by_tag)
     if SKIP_TEI:
         print("SKIP_TEI set, not rewriting EthioStudies.xml", file=sys.stderr)
         return

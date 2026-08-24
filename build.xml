@@ -6,8 +6,11 @@
     <property name="build.dir" value="build" />
     <!--
       expand.xqm: collection("/db/apps/EthioStudies")//t:biblStruct by tag.
-      string:Zotero(): citations.xml @tag = bm:… / xhtml csl-entry.
-      CSL and GitHub Pages stay in git, not in the xar.
+      string:Zotero / fo:Zotero: citations.xml
+      gfb:zot / viewItem:zot: citations-url-doi.xml
+      gfb:shortCit: citations-short.xml
+      fo:zoteroCit: citations-short-main.xml
+      CSL, locale, Pages, and Node stay in git, not in the xar.
     -->
     <target name="clean" description="delete all build artefacts">
         <delete includeemptydirs="true" failonerror="false">
@@ -17,7 +20,7 @@
     <target name="xar" depends="clean">
         <mkdir dir="${build.dir}" />
         <zip destfile="${build.dir}/${project.app}-${project.version}.xar">
-            <fileset dir="." includes="expath-pkg.xml,repo.xml,EthioStudies.xml,citations.xml" />
+            <fileset dir="." includes="expath-pkg.xml,repo.xml,EthioStudies.xml,citations.xml,citations-url-doi.xml,citations-short.xml,citations-short-main.xml" />
         </zip>
     </target>
 </project>

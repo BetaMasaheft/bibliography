@@ -10,12 +10,25 @@ Two audiences, one repo:
 | File | Consumer |
 | --- | --- |
 | `EthioStudies.xml` | `expand.xqm` — `//t:biblStruct` by `note[@type="tag"] = $ptr` (`bm:…`) |
-| `citations.xml` | `string:Zotero()` — `@tag = $ptr` then `div.csl-entry` (styled HTML) |
+| `citations.xml` | `string:Zotero()` / `fo:Zotero()` — main HLCEES `div.csl-entry` |
+| `citations-url-doi.xml` | `gfb:zot()` / `viewItem:zot()` — HLCEES with-url-doi `div.csl-entry` |
+| `citations-short.xml` | `gfb:shortCit()` — with-url-doi in-text cite |
+| `citations-short-main.xml` | `fo:zoteroCit()` — main HLCEES in-text cite |
 | `expath-pkg.xml` / `repo.xml` | eXist package metadata (`target=EthioStudies`) |
 
-Refresh: `python3 bin/refresh-ethiostudies.py` (TEI pages + JSON `include=bib` for tags and CSL HTML). `SKIP_TEI=1` rewrites only `citations.xml`.
+Callers must `doc("/db/apps/EthioStudies/citations.xml")` (or the sibling file). `collection()` would mix styles once several citation files share `@tag`.
 
-Live fallbacks remain for cache misses. Other `format=bib` call sites that use `-with-url-doi` are not this cache.
+## Refresh
+
+Zotero is the **item** source (`format=json` tags + `format=csljson`). This repo's `.csl` files are the **processor** input.
+
+```
+python3 bin/refresh-ethiostudies.py
+```
+
+Requires Node 20+ (`npm ci`). `bin/render-citations.js` runs citeproc-js (citation-js) with `locales/locales-en-GB.xml` and wraps DOI/URL like Zotero `linkwrap=1`. `SKIP_TEI=1` skips the TEI dump; `SKIP_RENDER=1` writes `build/ethiostudies.csl.json` only. `MAX_PAGES=N` is for tests.
+
+Live Zotero fallbacks remain for cache misses.
 
 ## CSL (not installed into eXist)
 

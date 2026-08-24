@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <meta xmlns="http://exist-db.org/xquery/repo">
-    <description>Zotero group 358366 caches: TEI biblStruct (expand.xqm) and styled CSL HTML keyed by bm: tag (string:Zotero).</description>
+    <description>Zotero group 358366 caches: TEI biblStruct (expand.xqm) and citeproc HTML keyed by bm: tag (string:Zotero, gfb, viewItem, fo).</description>
     <author>BetaMasaheft</author>
     <website>https://github.com/BetaMasaheft/bibliography</website>
     <license>CC BY-SA 4.0</license>
