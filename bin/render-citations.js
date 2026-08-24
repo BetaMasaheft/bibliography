@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import process from 'node:process'
@@ -22,14 +23,14 @@ export function validBmTag (tag) {
     !tag.includes(' ')
 }
 
-function escapeAttr (value) {
+export function escapeAttr (value) {
   return value
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
 }
 
-function escapeText (value) {
+export function escapeText (value) {
   return value
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -45,12 +46,30 @@ export function extractEntry (html) {
 export function linkwrap (html, item) {
   let out = html
   const doi = item.DOI || item.doi
-  if (doi && out.includes(doi) && !out.includes(`doi.org/${doi}`)) {
-    out = out.replaceAll(doi, `<a href="https://doi.org/${doi}">${doi}</a>`)
+  if (doi) {
+    const href = escapeAttr(`https://doi.org/${doi}`)
+    const already =
+      out.includes(`href="${href}"`) ||
+      out.includes(`href="https://doi.org/${doi}"`) ||
+      out.includes(`doi.org/${doi}`)
+    if (out.includes(doi) && !already) {
+      out = out.replaceAll(doi, `<a href="${href}">${escapeText(doi)}</a>`)
+    }
   }
   const url = item.URL || item.url
-  if (url && out.includes(url) && !out.includes(`href="${url}"`)) {
-    out = out.replaceAll(url, `<a href="${url}">${url}</a>`)
+  if (url) {
+    const href = escapeAttr(url)
+    const text = escapeText(url)
+    const already =
+      out.includes(`href="${href}"`) || out.includes(`href="${url}"`)
+    const present = out.includes(url) || out.includes(text)
+    if (present && !already) {
+      if (out.includes(url)) {
+        out = out.replaceAll(url, `<a href="${href}">${text}</a>`)
+      } else {
+        out = out.replaceAll(text, `<a href="${href}">${text}</a>`)
+      }
+    }
   }
   return out
 }
@@ -79,17 +98,32 @@ function formatItem (item, template, kind) {
   })
 }
 
-function writeCitations (path, byTag, asHtml) {
+function assertWellFormed (xml, path) {
+  try {
+    execFileSync('xmllint', ['--noout', '-'], {
+      input: xml,
+      stdio: ['pipe', 'pipe', 'pipe']
+    })
+  } catch (err) {
+    const detail = err.stderr ? String(err.stderr) : String(err)
+    throw new Error(`well-formedness failed for ${path}: ${detail}`)
+  }
+}
+
+function writeCitations (path, byTag) {
   const parts = [
     '<?xml version="1.0" encoding="UTF-8"?>\n',
     `<citations xmlns="${NS}">\n`
   ]
   for (const tag of Object.keys(byTag).sort()) {
-    const body = asHtml ? byTag[tag] : escapeText(byTag[tag])
-    parts.push(`  <citation tag="${escapeAttr(tag)}">${body}</citation>\n`)
+    parts.push(
+      `  <citation tag="${escapeAttr(tag)}">${byTag[tag]}</citation>\n`
+    )
   }
   parts.push('</citations>\n')
-  writeFileSync(path, parts.join(''))
+  const xml = parts.join('')
+  assertWellFormed(xml, path)
+  writeFileSync(path, xml)
 }
 
 export async function renderAll (itemsByTag, { root, outDir }) {
@@ -98,29 +132,37 @@ export async function renderAll (itemsByTag, { root, outDir }) {
   const bibUrlDoi = {}
   const citUrlDoi = {}
   const citMain = {}
+  let skipped = 0
 
   for (const [tag, item] of Object.entries(itemsByTag)) {
     if (!validBmTag(tag)) continue
     const mainBib = extractEntry(formatItem(item, 'hlcees', 'bibliography'))
     const urlBib = extractEntry(formatItem(item, 'hlcees-url-doi', 'bibliography'))
-    if (!mainBib || !urlBib) continue
+    if (!mainBib || !urlBib) {
+      skipped += 1
+      process.stderr.write(`skip ${tag}: missing csl-entry\n`)
+      continue
+    }
     bib[tag] = linkwrap(mainBib, item)
     bibUrlDoi[tag] = linkwrap(urlBib, item)
     citMain[tag] = formatItem(item, 'hlcees', 'citation').trim()
     citUrlDoi[tag] = formatItem(item, 'hlcees-url-doi', 'citation').trim()
   }
 
-  const files = {
+  const paths = {
     bib: join(outDir, 'citations.xml'),
     bibUrlDoi: join(outDir, 'citations-url-doi.xml'),
     citUrlDoi: join(outDir, 'citations-short.xml'),
     citMain: join(outDir, 'citations-short-main.xml')
   }
-  writeCitations(files.bib, bib, true)
-  writeCitations(files.bibUrlDoi, bibUrlDoi, true)
-  writeCitations(files.citUrlDoi, citUrlDoi, true)
-  writeCitations(files.citMain, citMain, true)
-  return files
+  writeCitations(paths.bib, bib)
+  writeCitations(paths.bibUrlDoi, bibUrlDoi)
+  writeCitations(paths.citUrlDoi, citUrlDoi)
+  writeCitations(paths.citMain, citMain)
+
+  const written = Object.keys(bib).length
+  process.stderr.write(`rendered ${written} tags, skipped ${skipped}\n`)
+  return { paths, skipped, written }
 }
 
 async function main () {
@@ -128,15 +170,15 @@ async function main () {
   const jsonPath = resolve(process.argv[2] || join(root, 'build/ethiostudies.csl.json'))
   const outDir = resolve(process.argv[3] || root)
   const items = JSON.parse(readFileSync(jsonPath, 'utf8'))
-  const files = await renderAll(items, { root, outDir })
-  for (const [kind, path] of Object.entries(files)) {
+  const { paths } = await renderAll(items, { root, outDir })
+  for (const [kind, path] of Object.entries(paths)) {
     process.stderr.write(`wrote ${kind}: ${path}\n`)
   }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   main().catch((err) => {
-    process.stderr.write(String(err) + '\n')
+    process.stderr.write(`${String(err)}\n`)
     process.exit(1)
   })
 }

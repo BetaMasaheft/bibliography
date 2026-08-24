@@ -31,6 +31,12 @@ jobs:
       - name: Refresh EthioStudies.xml from the live Zotero API
         run: python3 bin/refresh-ethiostudies.py
 
+      - name: Validate refreshed XML before commit
+        run: |
+          xmllint --noout EthioStudies.xml \
+            citations.xml citations-url-doi.xml \
+            citations-short.xml citations-short-main.xml
+
       - name: Diff refreshed snapshot against working tree
         id: diff
         run: |

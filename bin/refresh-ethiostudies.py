@@ -86,9 +86,27 @@ def join_by_tag(tags_by_key, csl_items):
         if item is None:
             continue
         for tag in tags:
-            if valid_bm_tag(tag) and tag not in out:
-                out[tag] = item
+            if not valid_bm_tag(tag):
+                continue
+            if tag in out:
+                print(
+                    f"  warning: duplicate bm: tag {tag} (keeping first)",
+                    file=sys.stderr,
+                )
+                continue
+            out[tag] = item
     return out
+
+
+def retry_wait_seconds(headers, attempt):
+    """Seconds to wait before retrying a 429/5xx response."""
+    retry_after = headers.get("Retry-After") or headers.get("Backoff")
+    if retry_after:
+        try:
+            return float(retry_after)
+        except ValueError:
+            pass
+    return 1.5 * attempt
 
 
 def fetch(start, limit, fmt="tei", extra="", retries=3):
@@ -109,8 +127,14 @@ def fetch(start, limit, fmt="tei", extra="", retries=3):
                     return json.loads(text), total
                 return text, total
         except urllib.error.HTTPError as e:
-            if e.code == 500 and attempt < retries:
-                time.sleep(1.5 * attempt)
+            if e.code in (429, 500, 503) and attempt < retries:
+                wait = retry_wait_seconds(e.headers, attempt)
+                print(
+                    f"  HTTP {e.code} start={start} fmt={fmt}, "
+                    f"retry in {wait}s (attempt {attempt}/{retries})",
+                    file=sys.stderr,
+                )
+                time.sleep(wait)
                 continue
             raise
 
@@ -231,6 +255,15 @@ def render_citations(items_by_tag):
         ["node", script, os.path.abspath(CSLJSON_PATH), REPO_ROOT],
         check=True,
     )
+    citation_files = [
+        "citations.xml",
+        "citations-url-doi.xml",
+        "citations-short.xml",
+        "citations-short-main.xml",
+    ]
+    for name in citation_files:
+        path = os.path.join(REPO_ROOT, name)
+        subprocess.run(["xmllint", "--noout", path], check=True)
 
 
 def write_tei(tags_by_key):

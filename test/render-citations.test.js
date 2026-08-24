@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { renderAll, validBmTag } from '../bin/render-citations.js'
+import { linkwrap, renderAll, validBmTag } from '../bin/render-citations.js'
 
 function assertXml (xml) {
   execFileSync('xmllint', ['--noout', '-'], { input: xml })
@@ -25,14 +25,40 @@ test('drops bm: tags that are empty or contain spaces', () => {
   assert.equal(validBmTag('not-bm'), false)
 })
 
+test('linkwrap escapes & in URL href and link text', () => {
+  const url = 'https://example.com/view?a=1&b=2'
+  const html = `<div class="csl-entry">See ${url} for details.</div>`
+  const out = linkwrap(html, { URL: url })
+  assert.match(out, /href="https:\/\/example\.com\/view\?a=1&amp;b=2"/)
+  assert.match(out, />https:\/\/example\.com\/view\?a=1&amp;b=2</)
+  assertXml(
+    '<?xml version="1.0"?>' +
+      '<citations xmlns="https://betamasaheft.eu/bibliography">' +
+      `<citation tag="bm:Amp">${out}</citation></citations>`
+  )
+})
+
+test('linkwrap does not double-wrap already linked escaped URLs', () => {
+  const url = 'https://example.com/view?a=1&b=2'
+  const html =
+    '<div class="csl-entry">' +
+    '<a href="https://example.com/view?a=1&amp;b=2">' +
+    'https://example.com/view?a=1&amp;b=2</a></div>'
+  const out = linkwrap(html, { URL: url })
+  assert.equal((out.match(/<a /g) || []).length, 1)
+})
+
 test('renders main bib, url-doi bib, and both short-cite files from local CSL', async () => {
   const outDir = mkdtempSync(join(tmpdir(), 'citations-'))
-  const files = await renderAll(fixture, { root, outDir })
+  const { paths, skipped, written } = await renderAll(fixture, { root, outDir })
 
-  const main = readFileSync(files.bib, 'utf8')
-  const urlDoi = readFileSync(files.bibUrlDoi, 'utf8')
-  const shortUrlDoi = readFileSync(files.citUrlDoi, 'utf8')
-  const shortMain = readFileSync(files.citMain, 'utf8')
+  assert.equal(skipped, 0)
+  assert.equal(written, 1)
+
+  const main = readFileSync(paths.bib, 'utf8')
+  const urlDoi = readFileSync(paths.bibUrlDoi, 'utf8')
+  const shortUrlDoi = readFileSync(paths.citUrlDoi, 'utf8')
+  const shortMain = readFileSync(paths.citMain, 'utf8')
 
   for (const xml of [main, urlDoi, shortUrlDoi, shortMain]) {
     assertXml(xml)

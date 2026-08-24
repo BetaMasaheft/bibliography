@@ -26,9 +26,15 @@ Zotero is the **item** source (`format=json` tags + `format=csljson`). This repo
 python3 bin/refresh-ethiostudies.py
 ```
 
-Requires Node 20+ (`npm ci`). `bin/render-citations.js` runs citeproc-js (citation-js) with `locales/locales-en-GB.xml` and wraps DOI/URL like Zotero `linkwrap=1`. `SKIP_TEI=1` skips the TEI dump; `SKIP_RENDER=1` writes `build/ethiostudies.csl.json` only. `MAX_PAGES=N` is for tests.
+Requires Node 20+ (`npm ci`) and `xmllint`. `bin/render-citations.js` runs citeproc-js (citation-js) with `locales/locales-en-GB.xml` and wraps DOI/URL like Zotero `linkwrap=1`. `SKIP_TEI=1` skips the TEI dump; `SKIP_RENDER=1` writes `build/ethiostudies.csl.json` only. `MAX_PAGES=N` is for tests.
 
-Live Zotero fallbacks remain for cache misses.
+### Cache vs live Zotero
+
+Cached HTML is citeproc-js + local CSL + `en-GB`, not Zotero's server-side CSL. Link wrapping aims to match `linkwrap=1`, but punctuation and small markup differences vs live fallback are expected. Prefer the cache for eXist; treat live Zotero as a miss fallback only.
+
+### Deploy coupling
+
+New citation XML files must land in the bibliography package **and** be jarred by BetMas `data.Dockerfile`. Merge/rebuild order: bibliography → BetMas data image → BetMasWeb cache callers.
 
 ## CSL (not installed into eXist)
 
