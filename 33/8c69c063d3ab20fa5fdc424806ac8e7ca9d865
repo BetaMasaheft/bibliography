@@ -1,0 +1,23 @@
+bin/refresh-ethiostudies.py
+  s_1544e160683453::t_fc4186cf52b104 9-14,27-28,38,45-50,53-54,57,61,66-68,79,84,92,99-147,149,166-170,178-181,183-184
+  s_1544e160683453::t_d947fd7c38d738 177,182
+  s_1544e160683453::t_8a764376b3f016 55-56
+EthioStudies.xml
+  s_1544e160683453::t_d9ab3c449c6b84 2-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "338c69c063d3ab20fa5fdc424806ac8e7ca9d865",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
