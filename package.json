@@ -10,7 +10,7 @@
     "render": "node bin/render-citations.js"
   },
   "dependencies": {
-    "@citation-js/core": "^0.7.21",
+    "@citation-js/core": "^0.8.2",
     "@citation-js/plugin-csl": "^0.7.21"
   }
 }
