@@ -1,0 +1,21 @@
+{
+  "bm:2020GnisciPsalter": {
+    "id": "ZHYISS79",
+    "type": "article-journal",
+    "title": "Constructing Kingship in Early Solomonic Ethiopia: The David and Solomon Portraits in the Juel-Jensen Psalter",
+    "DOI": "10.1080/00043079.2020.1765629",
+    "URL": "https://www.tandfonline.com/doi/full/10.1080/00043079.2020.1765629",
+    "ISSN": "0004-3079",
+    "issued": { "date-parts": [[2020]] },
+    "author": [{ "family": "Gnisci", "given": "Jacopo" }],
+    "container-title": "The Art Bulletin",
+    "volume": "102",
+    "issue": "4",
+    "page": "7-36"
+  },
+  "bm: bad space": {
+    "id": "SKIPME",
+    "type": "book",
+    "title": "Should be dropped"
+  }
+}

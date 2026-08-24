@@ -18,7 +18,11 @@ jobs:
     steps:
       - name: Dispatch bibliography-updated to BetMas
         env:
-          GH_TOKEN: ${{ secrets.DEPLOY_PAT }}
+          GH_TOKEN: ${{ secrets.CI_BOT_PAT }}
         run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::CI_BOT_PAT is not set on this repo."
+            exit 1
+          fi
           gh api repos/BetaMasaheft/BetMas/dispatches \
             -f event_type=bibliography-updated

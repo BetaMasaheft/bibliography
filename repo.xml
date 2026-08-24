@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <meta xmlns="http://exist-db.org/xquery/repo">
-    <description>EthioStudies bibliography: CSL styles and the cached Zotero group-358366 export that expand.xqm reads for bm: pointer resolution</description>
+    <description>Zotero group 358366 caches: TEI biblStruct (expand.xqm) and citeproc HTML keyed by bm: tag (string:Zotero, gfb, viewItem, fo).</description>
     <author>BetaMasaheft</author>
     <website>https://github.com/BetaMasaheft/bibliography</website>
     <license>CC BY-SA 4.0</license>

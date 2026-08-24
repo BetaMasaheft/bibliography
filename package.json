@@ -1,0 +1,16 @@
+{
+  "name": "betamasaheft-bibliography",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js && python3 test/test_refresh.py",
+    "render": "node bin/render-citations.js"
+  },
+  "dependencies": {
+    "@citation-js/core": "^0.7.21",
+    "@citation-js/plugin-csl": "^0.7.21"
+  }
+}

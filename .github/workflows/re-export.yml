@@ -19,8 +19,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install citeproc
+        run: npm ci
+
       - name: Refresh EthioStudies.xml from the live Zotero API
         run: python3 bin/refresh-ethiostudies.py
+
+      - name: Validate refreshed XML before commit
+        run: |
+          xmllint --noout EthioStudies.xml \
+            citations.xml citations-url-doi.xml \
+            citations-short.xml citations-short-main.xml
 
       - name: Diff refreshed snapshot against working tree
         id: diff
@@ -38,6 +53,6 @@ jobs:
         run: |
           git config user.name "betmas-bot"
           git config user.email "betmas-bot@users.noreply.github.com"
-          git add -A
+          git add EthioStudies.xml citations.xml citations-url-doi.xml citations-short.xml citations-short-main.xml
           git commit -m "chore(bibliography): scheduled Zotero re-export snapshot"
           git push origin HEAD:${{ github.ref_name }}

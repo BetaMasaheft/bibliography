@@ -1,2 +1,7 @@
 build/
+node_modules/
+bin/__pycache__/
 .DS_Store
+.codacy/
+.cursor/
+.vscode/
