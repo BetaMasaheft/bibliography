@@ -1,0 +1,28 @@
+.github/workflows/validate_push.yml
+  s_1544e160683453::t_8e9b7ba221a1f8 22,25
+  s_1544e160683453::t_c676b01a56a780 7-9
+.github/workflows/validate_pr.yml
+  s_1544e160683453::t_68bd9e909d1de3 4-6
+  s_1544e160683453::t_d1deb2af3d61da 19-22,25
+build.xml
+  s_1544e160683453::t_f3d30aa1c318e1 18,23-25
+  s_1544e160683453::t_968bc8882f7f1f 19
+.github/workflows/re-export.yml
+  s_1544e160683453::t_85baa81e900391 43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "fb293043cc0fd238430da62bdfc6db2f6f1a78ef",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
