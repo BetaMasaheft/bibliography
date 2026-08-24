@@ -1,0 +1,33 @@
+expath-pkg.xml
+  s_1544e160683453::t_804c22e3526e29 3
+README.md
+  s_1544e160683453::t_63e6a717839afc 29,31-37
+bin/refresh-ethiostudies.py
+  s_1544e160683453::t_28db70c3d87ce7 258-266
+  s_1544e160683453::t_f7a557c9c35ed1 89-97,101-111,130-137
+test/render-citations.test.js
+  s_1544e160683453::t_e9d2bd2c1aaca3 10,28-50,53-56,58-61
+.github/workflows/re-export.yml
+  s_1544e160683453::t_909fb28dcaeead 34-39
+test/test_refresh.py
+  s_1544e160683453::t_dd00bab45536b2 40-55
+bin/render-citations.js
+  s_1544e160683453::t_c514e2988266a9 2,26,33,49-57,60-72,101-113,119-121,124-126,135,141-145,152,158-165,173-174
+  s_1544e160683453::t_afddcc0fe0320a 181
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "fe0a429f18d901ff607a6b91c40b105c387ebc4e",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
