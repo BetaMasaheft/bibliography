@@ -1,0 +1,23 @@
+bin/render-citations.js
+  s_1544e160683453::t_0e4355ca4d612a 80-81,92,96
+package-lock.json
+  s_1544e160683453::t_54c018e69333b8 10,50-52,59,62
+package.json
+  s_1544e160683453::t_419eaf75da8307 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "227d5a192c25d3ba48cb4978e5c0d25c9463ebb2",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
