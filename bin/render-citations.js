@@ -77,8 +77,8 @@ export function linkwrap (html, item) {
 function register (root) {
   const config = plugins.config.get('@csl')
   for (const [name, file] of Object.entries(STYLE_FILES)) {
-    if (!config.templates.has(name)) {
-      config.templates.add(name, readFileSync(join(root, file), 'utf8'))
+    if (!config.styles.has(name)) {
+      config.styles.add(name, readFileSync(join(root, file), 'utf8'))
     }
   }
   if (!config.locales.has('en-GB')) {
@@ -89,11 +89,11 @@ function register (root) {
   }
 }
 
-function formatItem (item, template, kind) {
+function formatItem (item, style, kind) {
   const cite = new Cite(item)
   return cite.format(kind, {
     format: 'html',
-    template,
+    style,
     lang: 'en-GB'
   })
 }
