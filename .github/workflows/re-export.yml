@@ -1,0 +1,43 @@
+name: Scheduled Zotero Re-export
+
+# workflow_dispatch only - no schedule/push until a CI run (not just
+# local) has been observed and the resulting diff reviewed. See
+# bibliography#14/#16. Once validated, add schedule/push and a notify
+# step (matching expanded's notify-betmas.yml) so a refresh flows into
+# betmas-data.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  re-export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Refresh EthioStudies.xml from the live Zotero API
+        run: python3 bin/refresh-ethiostudies.py
+
+      - name: Diff refreshed snapshot against working tree
+        id: diff
+        run: |
+          if git status --porcelain | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git status --short
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No diff - nothing to commit."
+          fi
+
+      - name: Commit and push re-export diff
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "betmas-bot"
+          git config user.email "betmas-bot@users.noreply.github.com"
+          git add -A
+          git commit -m "chore(bibliography): scheduled Zotero re-export snapshot"
+          git push origin HEAD:${{ github.ref_name }}

@@ -1,0 +1,32 @@
+name: Validate Push
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  validate-all-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install Test Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
+      - name: Ensure all XML/CSL files are well formed
+        run: |
+          xmllint --noout \
+            $(find . -type f \( -name '*.xml' -o -name '*.csl' \))
+
+      - name: Build Expath Package
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: 8
+      - run: ant
