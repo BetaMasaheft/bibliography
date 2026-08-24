@@ -38,6 +38,6 @@ jobs:
         run: |
           git config user.name "betmas-bot"
           git config user.email "betmas-bot@users.noreply.github.com"
-          git add EthioStudies.xml
+          git add EthioStudies.xml citations.xml
           git commit -m "chore(bibliography): scheduled Zotero re-export snapshot"
           git push origin HEAD:${{ github.ref_name }}

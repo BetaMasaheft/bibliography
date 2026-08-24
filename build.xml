@@ -5,9 +5,9 @@
     <property name="project.app" value="EthioStudies" />
     <property name="build.dir" value="build" />
     <!--
-      expand.xqm looks up collection("/db/apps/EthioStudies")//t:biblStruct
-      by tag notes. Only these three files belong in the xar; CSL, GitHub
-      Pages, and the refresh script stay in git for humans, not eXist.
+      expand.xqm: collection("/db/apps/EthioStudies")//t:biblStruct by tag.
+      string:Zotero(): citations.xml @tag = bm:… / xhtml csl-entry.
+      CSL and GitHub Pages stay in git, not in the xar.
     -->
     <target name="clean" description="delete all build artefacts">
         <delete includeemptydirs="true" failonerror="false">
@@ -17,7 +17,7 @@
     <target name="xar" depends="clean">
         <mkdir dir="${build.dir}" />
         <zip destfile="${build.dir}/${project.app}-${project.version}.xar">
-            <fileset dir="." includes="expath-pkg.xml,repo.xml,EthioStudies.xml" />
+            <fileset dir="." includes="expath-pkg.xml,repo.xml,EthioStudies.xml,citations.xml" />
         </zip>
     </target>
 </project>

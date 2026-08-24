@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <meta xmlns="http://exist-db.org/xquery/repo">
-    <description>Zotero group 358366 TEI cache. expand.xqm resolves bm: pointers from collection("/db/apps/EthioStudies")//t:biblStruct tag notes.</description>
+    <description>Zotero group 358366 caches: TEI biblStruct (expand.xqm) and styled CSL HTML keyed by bm: tag (string:Zotero).</description>
     <author>BetaMasaheft</author>
     <website>https://github.com/BetaMasaheft/bibliography</website>
     <license>CC BY-SA 4.0</license>
