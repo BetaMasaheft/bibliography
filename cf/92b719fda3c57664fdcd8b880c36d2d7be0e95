@@ -1,0 +1,20 @@
+.github/workflows/notify-betmas.yml
+  s_1544e160683453::t_d6668489550aa2 12-14
+  s_1544e160683453::t_ad85b817eaea37 1-11,15-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "cf92b719fda3c57664fdcd8b880c36d2d7be0e95",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
