@@ -5,11 +5,11 @@
     <property name="project.app" value="EthioStudies" />
     <property name="build.dir" value="build" />
     <!--
-      expand.xqm: collection("/db/apps/EthioStudies")//t:biblStruct by tag.
-      string:Zotero / fo:Zotero: citations.xml
-      gfb:zot / viewItem:zot: citations-url-doi.xml
-      gfb:shortCit: citations-short.xml
-      fo:zoteroCit: citations-short-main.xml
+      expand.xqm: biblStruct by tag under /db/apps/EthioStudies.
+      BetMasWeb zc:full / zc:bib: citations.xml
+      zc:full-url-doi: citations-url-doi.xml
+      zc:short-url-doi: citations-short.xml
+      zc:short: citations-short-main.xml
       CSL, locale, Pages, and Node stay in git, not in the xar.
     -->
     <target name="clean" description="delete all build artefacts">

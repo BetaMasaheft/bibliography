@@ -1,10 +1,10 @@
 name: Scheduled Zotero Re-export
 
-# workflow_dispatch only - no schedule/push until a CI run (not just
-# local) has been observed and the resulting diff reviewed. See
-# bibliography#14/#16. Once validated, add schedule/push and a notify
-# step (matching expanded's notify-betmas.yml) so a refresh flows into
-# betmas-data.
+# workflow_dispatch only until a CI-produced refresh diff has been
+# reviewed. Do not add cron/push lightly: a bad snapshot ships into
+# betmas-data via notify-betmas.yml on every master push.
+# After a good manual run, add e.g. schedule: cron: "0 6 * * 1".
+# Notify is already separate (.github/workflows/notify-betmas.yml).
 
 on:
   workflow_dispatch:
