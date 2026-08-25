@@ -1,0 +1,26 @@
+repo.xml
+  s_1544e160683453::t_c3b5f77560424e 3
+README.md
+  s_1544e160683453::t_1fd52b623db88e 12-16,21-22,33-39,42,48
+  s_1544e160683453::t_9db105440d2fc3 49
+.github/workflows/re-export.yml
+  s_1544e160683453::t_c253bd43ece2c9 3-7
+build.xml
+  s_1544e160683453::t_940c27f7dac51c 8-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "ff49574588e788151da588baad5698c41f8c8f30",
+  "prompts": {},
+  "sessions": {
+    "s_1544e160683453": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "9068b082-e053-4108-a625-480faaadd278",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
