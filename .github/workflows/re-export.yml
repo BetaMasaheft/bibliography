@@ -28,6 +28,14 @@ jobs:
       - name: Install citeproc
         run: npm ci
 
+      # render-citations.js and the validate step both shell out to xmllint
+      # (same as validate_pr / validate_push). Without this, refresh dies on
+      # spawnSync xmllint ENOENT after a successful Zotero fetch.
+      - name: Install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
       - name: Refresh EthioStudies.xml from the live Zotero API
         run: python3 bin/refresh-ethiostudies.py
 
