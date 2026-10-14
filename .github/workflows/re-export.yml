@@ -2,9 +2,13 @@ name: Scheduled Zotero Re-export
 
 # workflow_dispatch only until a CI-produced refresh diff has been
 # reviewed. Do not add cron/push lightly: a bad snapshot ships into
-# betmas-data via notify-betmas.yml on every master push.
-# After a good manual run, add e.g. schedule: cron: "0 6 * * 1".
-# Notify is already separate (.github/workflows/notify-betmas.yml).
+# betmas-data. After a good manual run, add e.g. schedule:
+# cron: "0 6 * * 1".
+#
+# Commits here use GITHUB_TOKEN, which does not trigger push workflows
+# (notify-betmas.yml). After a successful push we therefore dispatch
+# bibliography-updated ourselves with DEPLOY_PAT — same payload as
+# notify-betmas.yml. Human/PR pushes to master still go through notify.
 
 on:
   workflow_dispatch:
@@ -64,3 +68,17 @@ jobs:
           git add EthioStudies.xml citations.xml citations-url-doi.xml citations-short.xml citations-short-main.xml
           git commit -m "chore(bibliography): scheduled Zotero re-export snapshot"
           git push origin HEAD:${{ github.ref_name }}
+
+      # repository_dispatch always creates a run (unlike push-from-GITHUB_TOKEN).
+      - name: Notify BetMas data image
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.DEPLOY_PAT }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::DEPLOY_PAT is not set on this repo."
+            exit 1
+          fi
+          gh api repos/BetaMasaheft/BetMas/dispatches \
+            -f event_type=bibliography-updated
+          echo "Dispatched bibliography-updated to BetMas."
