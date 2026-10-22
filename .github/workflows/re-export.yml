@@ -1,14 +1,14 @@
 name: Scheduled Zotero Re-export
 
-# workflow_dispatch only until a CI-produced refresh diff has been
-# reviewed. Do not add cron/push lightly: a bad snapshot ships into
-# betmas-data. After a good manual run, add e.g. schedule:
+# Manually trigger building (workflow_dispatch) only until a CI-produced refresh diff has been
+# reviewed. Do not add cron/push easily, as a bad snapshot could ship into
+# betmas-data. After a good manual run, one could add schedule: e.g.:
 # cron: "0 6 * * 1".
 #
 # Commits here use GITHUB_TOKEN, which does not trigger push workflows
-# (notify-betmas.yml). After a successful push we therefore dispatch
-# bibliography-updated ourselves with DEPLOY_PAT — same payload as
-# notify-betmas.yml. Human/PR pushes to master still go through notify.
+# (see notify-betmas.yml). After a successful push, we therefore dispatch the
+# bibliography-updated event (see notify-betmas.yml) ourselves, by using DEPLOY_PAT — same payload as
+# notify-betmas.yml. In case of human/PR pushes to master, there is still the need to go through notify-betmas.yml.
 
 on:
   workflow_dispatch:
