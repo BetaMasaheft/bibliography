@@ -33,7 +33,7 @@ import urllib.request
 BASE = "https://api.zotero.org/groups/358366/items/top"
 PAGE_LIMIT = 50
 JSON_LIMIT = 100
-MAX_PAGES = int(os.environ.get("MAX_PAGES", "0")) or None
+MAX_PAGES = int(os.environ.get("MAX_PAGES", "1")) or None
 SKIP_TEI = os.environ.get("SKIP_TEI", "") in ("1", "true", "yes")
 SKIP_RENDER = os.environ.get("SKIP_RENDER", "") in ("1", "true", "yes")
 OUT_PATH = os.environ.get("OUT_PATH", "EthioStudies.xml")
@@ -183,6 +183,8 @@ def fetch_tags_by_key():
 def fetch_csl_items():
     items = []
     for body, total in paginate("csljson"):
+        print(body)
+        print("\n")
         chunk = parse_csljson(body)
         items.extend(chunk)
         print(

@@ -5,3 +5,4 @@ bin/__pycache__/
 .codacy/
 .cursor/
 .vscode/
+public/
