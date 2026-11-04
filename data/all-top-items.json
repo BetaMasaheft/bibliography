@@ -1,5 +1,82 @@
 [
     {
+        "key": "MADUVXU2",
+        "version": 13774,
+        "library": {
+            "type": "group",
+            "id": 358366,
+            "name": "EthioStudies",
+            "links": {
+                "self": {
+                    "href": "http://localhost:23119/api/groups/358366",
+                    "type": "application/json"
+                },
+                "alternate": {
+                    "href": "https://www.zotero.org/groups/358366",
+                    "type": "text/html"
+                }
+            }
+        },
+        "links": {
+            "self": {
+                "href": "http://localhost:23119/api/groups/358366/items/MADUVXU2",
+                "type": "application/json"
+            },
+            "alternate": {
+                "href": "https://www.zotero.org/groups/358366/items/MADUVXU2",
+                "type": "text/html"
+            }
+        },
+        "meta": {
+            "creatorSummary": "Grébaut",
+            "parsedDate": "1941",
+            "numChildren": 0
+        },
+        "data": {
+            "key": "MADUVXU2",
+            "version": 13774,
+            "itemType": "book",
+            "url": "http://www.geuthner.com/livre/catalogue-des-manuscrits-ethiopiens-de-la-collection-griaule/370",
+            "series": "Miscellanea Africana Lebaudy",
+            "place": "Paris",
+            "publisher": "Librairie Orientaliste Paul Geuthner",
+            "date": "1941",
+            "seriesNumber": "3",
+            "language": "French",
+            "title": "Catalogue des Manuscrits Éthiopiens de la Collection Griaule, II/7: Hagiographie, 8: Homélies–Panégyriques, 9: Malkeʿe et Salam",
+            "creators": [
+                {
+                    "firstName": "Sylvain",
+                    "lastName": "Grébaut",
+                    "creatorType": "author"
+                }
+            ],
+            "tags": [
+                {
+                    "tag": "bm:Grebaut1941GriauleII"
+                },
+                {
+                    "tag": "Cataloguing"
+                },
+                {
+                    "tag": "Ethiopic"
+                }
+            ],
+            "collections": [
+                "5XSSI742",
+                "7G8XTM54",
+                "M7KEU7JF"
+            ],
+            "relations": {
+                "owl:sameAs": [
+                    "http://zotero.org/groups/358371/items/46JSB477"
+                ]
+            },
+            "dateAdded": "2016-03-21T17:12:09Z",
+            "dateModified": "2026-10-28T12:05:41Z"
+        }
+    },
+    {
         "key": "VGLD22QS",
         "version": 2239,
         "library": {
@@ -180,49 +257,6 @@
             "relations": {},
             "dateAdded": "2026-10-21T09:33:09Z",
             "dateModified": "2026-10-21T09:36:49Z"
-        }
-    },
-    {
-        "key": "HW293Z7M",
-        "version": 139,
-        "library": {
-            "type": "group",
-            "id": 358366,
-            "name": "EthioStudies",
-            "links": {
-                "self": {
-                    "href": "http://localhost:23119/api/groups/358366",
-                    "type": "application/json"
-                },
-                "alternate": {
-                    "href": "https://www.zotero.org/groups/358366",
-                    "type": "text/html"
-                }
-            }
-        },
-        "links": {
-            "self": {
-                "href": "http://localhost:23119/api/groups/358366/items/HW293Z7M",
-                "type": "application/json"
-            },
-            "alternate": {
-                "href": "https://www.zotero.org/groups/358366/items/HW293Z7M",
-                "type": "text/html"
-            }
-        },
-        "meta": {
-            "numChildren": 0
-        },
-        "data": {
-            "key": "HW293Z7M",
-            "version": 139,
-            "itemType": "journalArticle",
-            "creators": [],
-            "tags": [],
-            "collections": [],
-            "relations": {},
-            "dateAdded": "2026-10-21T09:32:06Z",
-            "dateModified": "2026-10-21T09:32:06Z"
         }
     },
     {
@@ -547,49 +581,6 @@
         }
     },
     {
-        "key": "5MPJHF3T",
-        "version": 145,
-        "library": {
-            "type": "group",
-            "id": 358366,
-            "name": "EthioStudies",
-            "links": {
-                "self": {
-                    "href": "http://localhost:23119/api/groups/358366",
-                    "type": "application/json"
-                },
-                "alternate": {
-                    "href": "https://www.zotero.org/groups/358366",
-                    "type": "text/html"
-                }
-            }
-        },
-        "links": {
-            "self": {
-                "href": "http://localhost:23119/api/groups/358366/items/5MPJHF3T",
-                "type": "application/json"
-            },
-            "alternate": {
-                "href": "https://www.zotero.org/groups/358366/items/5MPJHF3T",
-                "type": "text/html"
-            }
-        },
-        "meta": {
-            "numChildren": 0
-        },
-        "data": {
-            "key": "5MPJHF3T",
-            "version": 145,
-            "itemType": "journalArticle",
-            "creators": [],
-            "tags": [],
-            "collections": [],
-            "relations": {},
-            "dateAdded": "2026-10-16T15:29:19Z",
-            "dateModified": "2026-10-16T15:29:19Z"
-        }
-    },
-    {
         "key": "AGLSGAXM",
         "version": 146,
         "library": {
@@ -665,49 +656,6 @@
             "relations": {},
             "dateAdded": "2022-05-02T12:44:40Z",
             "dateModified": "2026-10-16T15:21:34Z"
-        }
-    },
-    {
-        "key": "3H49LKT2",
-        "version": 147,
-        "library": {
-            "type": "group",
-            "id": 358366,
-            "name": "EthioStudies",
-            "links": {
-                "self": {
-                    "href": "http://localhost:23119/api/groups/358366",
-                    "type": "application/json"
-                },
-                "alternate": {
-                    "href": "https://www.zotero.org/groups/358366",
-                    "type": "text/html"
-                }
-            }
-        },
-        "links": {
-            "self": {
-                "href": "http://localhost:23119/api/groups/358366/items/3H49LKT2",
-                "type": "application/json"
-            },
-            "alternate": {
-                "href": "https://www.zotero.org/groups/358366/items/3H49LKT2",
-                "type": "text/html"
-            }
-        },
-        "meta": {
-            "numChildren": 0
-        },
-        "data": {
-            "key": "3H49LKT2",
-            "version": 147,
-            "itemType": "journalArticle",
-            "creators": [],
-            "tags": [],
-            "collections": [],
-            "relations": {},
-            "dateAdded": "2026-10-16T15:12:48Z",
-            "dateModified": "2026-10-16T15:12:48Z"
         }
     },
     {
@@ -548188,84 +548136,6 @@
             },
             "dateAdded": "2016-03-21T17:12:09Z",
             "dateModified": "2020-04-05T17:20:38Z"
-        }
-    },
-    {
-        "key": "MADUVXU2",
-        "version": 8281,
-        "library": {
-            "type": "group",
-            "id": 358366,
-            "name": "EthioStudies",
-            "links": {
-                "self": {
-                    "href": "http://localhost:23119/api/groups/358366",
-                    "type": "application/json"
-                },
-                "alternate": {
-                    "href": "https://www.zotero.org/groups/358366",
-                    "type": "text/html"
-                }
-            }
-        },
-        "links": {
-            "self": {
-                "href": "http://localhost:23119/api/groups/358366/items/MADUVXU2",
-                "type": "application/json"
-            },
-            "alternate": {
-                "href": "https://www.zotero.org/groups/358366/items/MADUVXU2",
-                "type": "text/html"
-            }
-        },
-        "meta": {
-            "creatorSummary": "Grébaut",
-            "parsedDate": "1941",
-            "numChildren": 0
-        },
-        "data": {
-            "key": "MADUVXU2",
-            "version": 8281,
-            "itemType": "book",
-            "url": "http://www.geuthner.com/livre/catalogue-des-manuscrits-ethiopiens-de-la-collection-griaule/370",
-            "series": "Miscellanea Africana Lebaudy",
-            "volume": "II/7: Hagiographie, 8: Homélies–Panégyriques, 9: Malkeʿe et Salam",
-            "place": "Paris",
-            "publisher": "Librairie Orientaliste Paul Geuthner",
-            "date": "1941",
-            "seriesNumber": "3",
-            "language": "French",
-            "title": "Catalogue des Manuscrits Éthiopiens de la Collection Griaule<i>, II/7:</i> Hagiographie<i>, 8:</i> Homélies–Panégyriques<i>, 9:</i> Malkeʿe et Salam",
-            "creators": [
-                {
-                    "firstName": "Sylvain",
-                    "lastName": "Grébaut",
-                    "creatorType": "author"
-                }
-            ],
-            "tags": [
-                {
-                    "tag": "Cataloguing"
-                },
-                {
-                    "tag": "Ethiopic"
-                },
-                {
-                    "tag": "bm:Grebaut1941GriauleII"
-                }
-            ],
-            "collections": [
-                "5XSSI742",
-                "7G8XTM54",
-                "M7KEU7JF"
-            ],
-            "relations": {
-                "owl:sameAs": [
-                    "http://zotero.org/groups/358371/items/46JSB477"
-                ]
-            },
-            "dateAdded": "2016-03-21T17:12:09Z",
-            "dateModified": "2020-04-05T17:20:18Z"
         }
     },
     {
