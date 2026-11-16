@@ -1,0 +1,25 @@
+.github/workflows/notify-betmas.yml
+  s_8bfb3335156c05::t_5fb7b4d1d107fc 17
+.github/workflows/re-export.yml
+  s_8bfb3335156c05::t_11b0a981ffde9e 21
+.github/workflows/validate_pr.yml
+  s_8bfb3335156c05::t_f57b674c275f29 9
+.github/workflows/validate_push.yml
+  s_8bfb3335156c05::t_cef70a02bf376f 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "db27a4997188c0ab9e6643d92e2bb7f16ce22683",
+  "prompts": {},
+  "sessions": {
+    "s_8bfb3335156c05": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "643a5d21-eab7-43a8-94bd-0b532756f586",
+        "model": "unknown"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
