@@ -1,0 +1,31 @@
+collection.xconf
+  s_b9450a356bc06f::t_af158a750940d8 1-12
+pre-install.xql
+  s_b9450a356bc06f::t_b836526c8a1d6b 1-31
+post-install.xql
+  s_b9450a356bc06f::t_330d0568bf6e76 1-13
+repo.xml
+  s_b9450a356bc06f::t_830f2ffef1491f 10-11
+build.xml
+  s_b9450a356bc06f::t_b1b185559d6e67 23
+expath-pkg.xml
+  s_b9450a356bc06f::t_8c6a585bbb49d0 3
+README.md
+  s_b9450a356bc06f::t_21b5e461d166c8 13,17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b8c3a1b5050d17ff2042a400f9d84b686078dd7e",
+  "prompts": {},
+  "sessions": {
+    "s_b9450a356bc06f": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "1bd97766-acd4-49d3-bb31-b1719f9da3e6",
+        "model": "default"
+      },
+      "human_author": "duncdrum <d.paterson@me.com>"
+    }
+  }
+}
