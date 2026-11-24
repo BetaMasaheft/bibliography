@@ -10,10 +10,12 @@ Two audiences, one repo:
 | File | Consumer |
 | --- | --- |
 | `EthioStudies.xml` | BetMas `expand.xqm` — `//t:biblStruct` by `note[@type="tag"] = $ptr` (`bm:…`) |
-| `citations.xml` | BetMasWeb `zc:full` / `zc:bib` (main HLCEES `div.csl-entry`) |
+| `citations.xml` | BetMasWeb `zc:full` / `zc:bib` (main HLCEES `div.csl-entry`); `expand:citation-by-tag` / `catalog:bibl` via `@tag` |
 | `citations-url-doi.xml` | BetMasWeb `zc:full-url-doi` (HLCEES with-url-doi) |
 | `citations-short.xml` | BetMasWeb `zc:short-url-doi` (with-url-doi in-text) |
 | `citations-short-main.xml` | BetMasWeb `zc:short` (main HLCEES in-text) |
+| `collection.xconf` | Range index on `@tag` (new-range Full); `pre-install.xql` stores under `/db/system/config` |
+| `pre-install.xql` / `post-install.xql` | Install xconf before resources; reindex on finish |
 | `expath-pkg.xml` / `repo.xml` | eXist package metadata (`target=EthioStudies`) |
 
 Callers must `doc("/db/apps/EthioStudies/citations.xml")` (or the sibling file). `collection()` would mix styles once several citation files share `@tag`.

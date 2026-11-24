@@ -20,7 +20,7 @@
     <target name="xar" depends="clean">
         <mkdir dir="${build.dir}" />
         <zip destfile="${build.dir}/${project.app}-${project.version}.xar">
-            <fileset dir="." includes="expath-pkg.xml,repo.xml,EthioStudies.xml,citations.xml,citations-url-doi.xml,citations-short.xml,citations-short-main.xml" />
+            <fileset dir="." includes="expath-pkg.xml,repo.xml,pre-install.xql,post-install.xql,collection.xconf,EthioStudies.xml,citations.xml,citations-url-doi.xml,citations-short.xml,citations-short-main.xml" />
         </zip>
     </target>
 </project>
