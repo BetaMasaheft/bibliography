@@ -7,4 +7,6 @@
     <copyright>true</copyright>
     <type>application</type>
     <target>EthioStudies</target>
+    <prepare>pre-install.xql</prepare>
+    <finish>post-install.xql</finish>
 </meta>
